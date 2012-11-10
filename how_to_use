@@ -1,0 +1,7 @@
+git clone git://github.com/qiqi6988/number_handling.git (replace url)
+git checkout fdb15850e6f2d395b128bde0f2fff6b20c96adc6(replace version)
+git add qiqi_test(replace directory or file name)
+git commit -m 'add qiqi_test to test new IOC-Clang'(what you have modified)
+git push git@github.com:qiqi6988/number_handling.git master(replace url)
+
+
