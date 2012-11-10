@@ -1,6 +1,6 @@
 {
   open Printf
-	
+	open ALG_Parser
 }
 
 let digit = ['0'-'9']
@@ -12,22 +12,22 @@ rule token=parse
 | "(!" 	{comment lexbuf}
 | "!!"	{comment1 lexbuf}
 (*type key words*)
-|"int" {print_string "key int\n";token lexbuf}|"float" {print_string "key float\n";token lexbuf} |"string" {print_string "key string\n";token lexbuf}
+|"int" {print_string "key int\n";token lexbuf}|"float" { FOR } |"string" {print_string "key string\n";token lexbuf}
 |"array" {print_string "key array\n";token lexbuf}|"boolean" {print_string "key boolean\n";token lexbuf}|"void" {print_string "key void\n";token lexbuf}
 (*geometry type key words*)
 |"point" {print_string "key point\n";token lexbuf}|"line" {print_string "key line\n";token lexbuf}|"polygon" {print_string "key polygon";token lexbuf}|"ellipse" {print_string "key ellipse";token lexbuf}
 (*control key words*)
-|"for" {print_string "key for";token lexbuf}|"while" {print_string "key while\n";token lexbuf}|"if" {print_string "key if\n";token lexbuf}
+|"for" {FOR}|"while" {print_string "key while\n";token lexbuf}|"if" {print_string "key if\n";token lexbuf}
 | "else" {print_string "key else\n";token lexbuf}|"elseif" {print_string "key elseif";token lexbuf}|"case" {print_string "key case\n";token lexbuf}|"return" {print_string "key return\n";token lexbuf}
 | "switch" {print_string "key switch\n";token lexbuf}|"continue" {print_string "key continue\n";token lexbuf}|"break" {print_string "key break\n";token lexbuf}
 | "def" {print_string "key def\n";token lexbuf}|"default" {print_string "key default\n";token lexbuf}
 |id		as identifier {printf "identifier: %s\n" identifier; token lexbuf}
 |digit+ as num {printf "number: %d\n" (int_of_string num); token lexbuf} 
 | (digit+'.'digit*|'.'digit+)('e'['+' '-']?digit+)?
-| digit+'e'['+' '-']?digit+  as float_num {printf "float_num:%s\n" float_num; token lexbuf}
+| digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
 (*punctuation*)
-|"(" {print_string "LPAREN " ;token lexbuf} | ")" {print_string "RPAREN ";token lexbuf} | "[" {print_string "LBRACE ";token lexbuf} | "]" {print_string "RBRACE ";token lexbuf}
-| "[" {print_string "LBRACKET ";token lexbuf} | "]" {print_string "RBRACKET ";token lexbuf} |"," {print_string "COMMA ";token lexbuf} | ";" {print_string "SEMI ";token lexbuf}
+|"(" {LPAREN} | ")" {RPAREN} | "{" {print_string "LBRACE ";token lexbuf} | "}" {print_string "RBRACE ";token lexbuf}
+| "[" {LBRACKET } | "]" {RBRACKET } |"," {COMMA } | ";" {print_string "SEMI ";token lexbuf}
 (*Geometry operators*)
 |"//" {print_string "// op ";token lexbuf}|"^" {print_string "^ op ";token lexbuf}|"|-" {print_string "|- op ";token lexbuf}|"==" {print_string "== op ";token lexbuf}|"!=" {print_string "!= op ";token lexbuf}
 |"<<=" {print_string "<<= op ";token lexbuf}|">>=" {print_string ">>= op";token lexbuf}|"<<" {print_string "<< op";token lexbuf}|">>" {print_string ">> op";token lexbuf}
