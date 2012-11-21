@@ -1,0 +1,21 @@
+make clean
+make
+./test
+
+
+input:
+ac
+a12_
+s_
+a2
+_a
+Ctrl+D
+
+
+output:
+identifier: ac
+ignoredidentifier: a12_
+ignoredidentifier: s_
+ignoredidentifier: a2
+ignoredFatal error: exception Failure("illegal character_")
+
