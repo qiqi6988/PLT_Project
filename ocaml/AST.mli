@@ -1,39 +1,69 @@
-type op=EE|NE|SE|LE|S|L
-type op2=PARA|INTERS|RELAT|TE|SS|LL|SSE|LLE
-type op1=PLUS|MINUS|MUL|DIV|PERC
+type op=EE|NE|SE|LE|S|L|PARA|INTERS|RELAT|TE|SS|LL|SSE|LLE|PLUS|MINUS|MUL|DIV|PERC
+
+
+
+type var_type=
+| INT_TYPE
+|FLOAT
+|ARRAY
+|STRING
+|VOID
+|BOOLEAN
+| POINT
+|LINE
+|POLYGON
+|ELLIPSE
+
+
 type expr=
 	| NUM of float
 	| INT of int
 	| ID of string
-	| Binop of expr * op1 * expr
-	| Binop1 of expr * op * expr
+	| Binop of expr * op * expr
 	| Assign of string * expr
-
-type point=
-	| Point of expr * expr
-
-type line=
-	| Line of point * point
-
-type polygon=
-	| Polygon of point list
-
-type ellipse=
-	| Ellipse of point * expr * expr
-
-type geoexpr=
+	| Call of string * expr list
 	| String of string
 	| PointEx of point
 	| LineEx of line
 	| PolygonEx of polygon
 	| EllipseEx of ellipse
-	| GeoBinop of geoexpr * op2 * geoexpr
-	| GeoBinop1 of geoexpr * op * geoexpr
-	| GeoAssign of string * geoexpr
 
-type ex=
-	| GeoEx of geoexpr
-	| Ex of expr
 
-type stmt=
-	| ExStmt of ex
+
+and point=
+	| Point of expr * expr
+
+
+and line=
+	| Line of point * point
+
+and polygon=
+	| Polygon of point list
+
+and ellipse=
+	| Ellipse of point * expr * expr
+
+
+
+and stmt=
+	| ExStmt of expr
+	| Return of expr
+	| Block of stmt list
+	| If of expr * stmt * stmt
+	| For of expr * expr * expr * stmt
+	| While of expr * stmt
+
+
+and fdecl=
+	{
+		ftype:var_type;
+		fname:string;
+		formal_list: (var_type * string) list;
+		locals: (var_type * string) list;
+		body: stmt list
+		
+	}
+
+type program=((var_type * string) list) * (fdecl list)
+
+

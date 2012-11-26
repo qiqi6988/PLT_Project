@@ -1,6 +1,6 @@
 	let _ =
 	let lexbuf = Lexing.from_channel stdin in
-	ALG_Parser.start1 ALG_Scanner.token lexbuf
+	ALG_Parser.program ALG_Scanner.token lexbuf
 	
 	
 	
