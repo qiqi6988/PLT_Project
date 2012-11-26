@@ -1,6 +1,6 @@
 all: AST.cmi test
-test: ALG_Parser.cmo ALG_Scanner.cmo test.cmo 
-	ocamlc  -o test ALG_Parser.cmo ALG_Scanner.cmo  test.cmo
+test: Semantics.cmo ALG_Parser.cmo ALG_Scanner.cmo test.cmo 
+	ocamlc  -o test Semantics.cmo ALG_Parser.cmo ALG_Scanner.cmo  test.cmo
 
 test.cmo : test.ml
 	ocamlc -c test.ml
@@ -16,6 +16,10 @@ ALG_Parser.ml:	ALG_Parser.mli
 	ocamlc -c ALG_Parser.mli
 ALG_Parser.mli:  ALG_Parser.mly
 	ocamlyacc ALG_Parser.mly
+	
+Semantics.cmo:Semantics.ml
+	ocamlc -c Semantics.ml
+
 AST.cmi: AST.mli
 	ocamlc -c AST.mli	
 clean: 

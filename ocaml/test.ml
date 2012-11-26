@@ -1,11 +1,7 @@
 	let _ =
 	let lexbuf = Lexing.from_channel stdin in
-	ALG_Parser.program ALG_Scanner.token lexbuf
+	let parse_prog=ALG_Parser.program ALG_Scanner.token lexbuf in
+	let prog=Semantics.check_program parse_prog in
+	true
 	
-	
-	
-(*let _ =
-	let lexbuf = Lexing.from_channel stdin in
-	let expr = Parser.expr Scanner.token lexbuf in
-	let result = string2tt expr in
-	print_string (result);; *)
+

@@ -40,7 +40,7 @@ rule token=parse
 (*basic operators*)
 |"+" {PLUS} |"-" {MINUS} | "*" {MUL}
 |"/" {DIV}|"%" {PERC} |"=" {E}
-|eof  	{exit 0}
+|eof  	{EOF}
 |_ 	as char		{raise (Failure("SCANNER:illegal input"^Char.escaped char))}
 
 and comment =parse
