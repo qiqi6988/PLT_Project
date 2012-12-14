@@ -14,6 +14,8 @@ let gen_type=
 
 (*test case:gen_expr ( Binop(PointEx(Point(INT(1),INT(2))),EE,PointEx(Point(INT(1),INT(2))))  );;*)
 (* gen_expr ( Binop(PointEx(Point(INT(1),INT(2))),PARA,PointEx(Point(INT(1),INT(2))))  );;*)
+(* gen_actual_list [PointEx(Point(INT(1),INT(2)));PointEx(Point(INT(1),INT(2)))];;*)
+(* gen_expr (Call("print", [PointEx(Point(INT(1),INT(2)));PointEx(Point(INT(1),INT(2)))]));;*)
 let rec	 gen_expr expr=
 	match expr with
 	| NUM(f) ->string_of_float f
@@ -54,13 +56,13 @@ let rec	 gen_expr expr=
 	| PolygonEx(Polygon(point_list))->"new polygon("^(string_of_int (List.length point_list))^",new point*["^(string_of_int (List.length point_list))^"]"^(gen_points point_list)
 	| EllipseEx(Ellipse(point, expr1,expr2))->"new ellipse("^(gen_point point)^",(float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"
 
-and gen_actual_list actual_list=function
-	| 
+and gen_actual_list =function
+	actual_list ->"("^(String.concat "," (List.map gen_expr actual_list))^")"
 
 
 and gen_point=function
 	|Point(expr1,expr2)->"new point((float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"
-gen_actual_list actual_list
+
 and gen_points point_list=
 	"{"^(String.concat "," (List.map gen_point point_list))^"}"
 
