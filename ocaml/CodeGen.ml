@@ -1,7 +1,16 @@
+(*int a;
+ellipse b;
+def line function(line a,line b)
 {
+ if(a//b)
+  return a//b;
+else 
+return a+b;
+}
+*)
+
 open AST
 open Printf
-}
 
 
 
@@ -10,10 +19,10 @@ let gen_type=function
 |FLOAT -> "float"
 |VOID -> "void"
 |BOOLEAN -> "bool"
-| POINT -> "point"
-|LINE -> "line"
-|POLYGON-> "polygon"
-|ELLIPSE	-> "ellipse"
+| POINT -> "Point"
+|LINE -> "Line"
+|POLYGON-> "Polygon"
+|ELLIPSE	-> "Ellipse"
 |ARRAY ->"array"
 |STRING->"string"
 
@@ -133,7 +142,9 @@ let gen_locals local_list=
 let gen_var_decl (var_type, id)=
 	(gen_type var_type)^" "^id 
 	in
-	(String.concat ";\n" (List.map gen_var_decl local_list)	)^";"	
+	match local_list with
+	| []->""
+	| _->(String.concat ";\n" (List.map gen_var_decl local_list)	)^";"	
 	
 let gen_fdecl fdecl=
 	let ftype=gen_type (fdecl.ftype) in
