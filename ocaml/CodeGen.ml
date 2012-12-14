@@ -152,8 +152,17 @@ let gen_fdecl fdecl=
 	let expr=	PointEx(Point(INT(1),INT(2))) in
 	let exstmt=ExStmt(expr) in
 	let body=[exstmt;exstmt]in
-	print_string (gen_fdecl {ftype=ftype;fname=fname;formal_list=formals;locals=locals;body=body});;
- *)
+	let fdecl_list=[{ftype=ftype;fname=fname;formal_list=formals;locals=locals;body=body};{ftype=ftype;fname=fname;formal_list=formals;locals=locals;body=body}] in
+	let vars=locals in
+	print_string (gen_program(vars,fdecl_list));;
+*)
+
+
+let gen_program (var_list, fdecl_list)=
+	let vars=gen_locals var_list in
+	let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
+	let header="#include \"main.h \"\n" in
+	header^vars^"\n"^fdecls
 
 
 
