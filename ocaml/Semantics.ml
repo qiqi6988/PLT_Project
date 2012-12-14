@@ -261,7 +261,7 @@ let rec get_expr_type expr func env =
 						end
 					|_ -> raise(Failure("Do Point Check to a non-Point object!"))
 					end(*end of definition of check_point_validation*)
-					in let final = List.exists check_point_validation l in
+					in let final = List.for_all check_point_validation l in
 					if final then POLYGON else raise(Failure("Error in Polygon expression!"))(*check whether each point is valid*)
 						 
 
@@ -370,4 +370,3 @@ let rec get_expr_type expr func env =
 			|Assign(id,expr) -> get_expr_type expr func env
 			|Call(fname,expr) -> get_func_return_type fname env(*We want to check the return type of the function fname*)
 			|_ ->raise(Failure("An unexpected error occured!"))
-
