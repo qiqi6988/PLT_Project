@@ -1,5 +1,7 @@
+{
 open AST
-
+open Printf
+}
 
 let gen_type=
 |INT_TYPE -> "int"
@@ -69,14 +71,42 @@ and gen_points point_list=
 	
 	
 	
+(*and stmt=
+	| ExStmt of expr
+	| Return of expr
+	| Block of stmt list
+	| If of expr * stmt * stmt
+	| For of expr * expr * expr * stmt
+	| While of expr * stmt
+*)
+let rec gen_stmt stmt=
+	match stmt with
+	| ExStmt(expr)->(gen_expr expr)^";"
+	| Return(expr)->"return "^(gen_expr expr)^";"
+	| Block(stmt_list)->"{"^(String.concat "\n" (List.map gen_stmt stmt_list))^"}"
+	| If(expr,stmt1,stmt2)->"if("^(gen_expr expr)^")\n"^(gen_stmt stmt1)^"\nelse\n"^(gen_stmt stmt2)
+	| For(expr1,expr2,expr3,stmt)->"for("^(gen_expr expr1)^";"^(gen_expr expr2)^";"^(gen_expr expr3)^")\n"^(gen_stmt stmt)
+	| While(expr,stmt)->"while("^(gen_expr expr)^")\n"^(gen_stmt stmt)
 	
 	
-	
-	
-	
-	
-	
-	
+(*let test_stmt=
+	let expr=	PointEx(Point(INT(1),INT(2))) in
+	let exstmt=ExStmt(expr) in
+	let block=Block([exstmt;exstmt]) in
+	print_string (gen_stmt block);;
+
+let test_stmt=
+	let expr=	PointEx(Point(INT(1),INT(2))) in
+	let exstmt=ExStmt(expr) in
+	let for1=For(expr,expr,expr,exstmt) in
+	print_string (gen_stmt for1);;
+
+let test_stmt=
+	let expr=	PointEx(Point(INT(1),INT(2))) in
+	let exstmt=ExStmt(expr) in
+	let while1=While(expr,exstmt) in
+	print_string (gen_stmt while1);;
+	*)
 	
 	
 	
