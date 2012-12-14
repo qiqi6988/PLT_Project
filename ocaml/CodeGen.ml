@@ -3,7 +3,9 @@ open AST
 open Printf
 }
 
-let gen_type=
+
+
+let gen_type=function
 |INT_TYPE -> "int"
 |FLOAT -> "float"
 |VOID -> "void"
@@ -12,6 +14,8 @@ let gen_type=
 |LINE -> "line"
 |POLYGON-> "polygon"
 |ELLIPSE	-> "ellipse"
+|ARRAY ->"array"
+|STRING->"string"
 
 
 (*test case:gen_expr ( Binop(PointEx(Point(INT(1),INT(2))),EE,PointEx(Point(INT(1),INT(2))))  );;*)
@@ -108,6 +112,48 @@ let test_stmt=
 	print_string (gen_stmt while1);;
 	*)
 	
+
+(*gen_var_decl (INT_TYPE, "a")*)	
+(*let gen_var_decl_list var_list=
+let gen_var_decl (var_type, id)=
+	(gen_type var_type)^" "^id 
+	in
+	String.concat "," (List.map gen_var_decl var_list)
+	in
+	print_string (gen_var_decl_list [(INT_TYPE ,"a");(FLOAT ,"b")]);;
+*)
+
+let gen_var_decl_list var_list=
+let gen_var_decl (var_type, id)=
+	(gen_type var_type)^" "^id 
+	in
+	String.concat "," (List.map gen_var_decl var_list)
+
+let gen_locals local_list=
+let gen_var_decl (var_type, id)=
+	(gen_type var_type)^" "^id 
+	in
+	(String.concat ";\n" (List.map gen_var_decl local_list)	)^";"	
+	
+let gen_fdecl fdecl=
+	let ftype=gen_type (fdecl.ftype) in
+	let fname=fdecl.fname in
+	let formal_list=(gen_var_decl_list fdecl.formal_list) in
+	let locals=gen_locals fdecl.locals in
+	let body=String.concat "\n" (List.map gen_stmt fdecl.body) in
+	ftype^" "^fname^" "^"("^formal_list^")\n{"^locals^"\n"^body^"\n}"
 	
 	
-	
+(*let test_gen_func=
+	let formals=[(INT_TYPE ,"a");(FLOAT ,"b")] in
+	let locals=[(INT_TYPE ,"a");(FLOAT ,"b")] in
+	let fname="func1" in
+	let ftype=INT_TYPE in
+	let expr=	PointEx(Point(INT(1),INT(2))) in
+	let exstmt=ExStmt(expr) in
+	let body=[exstmt;exstmt]in
+	print_string (gen_fdecl {ftype=ftype;fname=fname;formal_list=formals;locals=locals;body=body});;
+ *)
+
+
+
