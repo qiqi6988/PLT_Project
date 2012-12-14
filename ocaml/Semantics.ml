@@ -2,6 +2,13 @@ open AST
 
 module NameMap = Map.Make(String)
 
+
+type env = {
+	mutable functions : fdecl list;
+	variables : (var_type * string) list;
+	}
+
+
 let check_program (vars,funcs)=
 	let globals=List.fold_left (fun globals (var_type,var_name)->NameMap.add var_name var_type globals) NameMap.empty vars in
 
@@ -114,7 +121,7 @@ let get_type env func name =
 
 
 (*The function will check whether a variable "name" exists in a function's para list or local list*)
-let exist_id name func = (check_exist_para_in_fun func name) or (check_exist_var_in_fun func name)
+let exist_id name func env= (check_exist_para_in_fun func name) or (check_exist_var_in_fun func name) or (exist_global_variable env name)
 
 
 (*The function will check whether a function name "fun_name" has a corresponding function in the environment*)
@@ -370,3 +377,178 @@ let rec get_expr_type expr func env =
 			|Assign(id,expr) -> get_expr_type expr func env
 			|Call(fname,expr) -> get_func_return_type fname env(*We want to check the return type of the function fname*)
 			|_ ->raise(Failure("An unexpected error occured!"))
+
+(*The following function will judge whether an expression is assign or call*)
+
+let is_assign_call func = function
+	| Assign(_,_) ->true
+	| Call(_,_) ->true
+	| _ ->false
+
+
+(*This function is to check whether when calling function fname with a parameter list exprlist, it matches*)
+(*all the required parameter type as claimed in the function declaration*)
+(*fname: the function name being called*)
+(*exprlist: the expression list which performs as the parameters when called*)
+(*func: the function in which fname is called*)
+(*env: the big enviornment*)
+let check_func_paralist_type fname exprlist func env = 
+	let arg_type_list = List.map (fun(e) -> get_expr_type e func env) exprlist (*When you do the function call, you need to cehck the expr list matches every claimed parameter of the function*)
+	  in
+		if(List.length arg_type_list != List.length func.formal_list)
+		    then raise(Failure("The numebr of parameters given when calling function "^ func.fname ^" is worng!"))
+		else
+			let check_one_by_one count arg_type =  (*arg_type is the type of this variable when being called*)
+				let para = List.nth func.formal_list count in(*get this variable in the formal list*)
+				  let (real_var_type,para_name) = para in (*get its real type*)
+					  if real_var_type = arg_type (*if they are the same, just pass*)
+						 then  count+1
+						else
+							begin
+							match real_var_type, arg_type with
+							| INT_TYPE,FLOAT-> count+1
+							| FLOAT,INT_TYPE -> count+1
+							| _ ->raise(Failure("Type does not all match in the call expression of "^ fname))
+							end  (*end of check_one_by_one*)
+			  in 
+				     List.fold_left check_one_by_one 0 arg_type_list
+
+
+(*The following function check whether a statements list end with a return statement*)
+
+let has_return_stmt stmt_list = 
+	if List.length stmt_list = 0
+	  then false
+	else match (List.hd (List.rev stmt_list)) with
+	| Return(_) -> true
+	| _->false
+
+(*Check is a statement list, whether one if statements has a return value in it*)
+let if_has_return stmt_list = 
+	let if_stmt_list = List.filter (function If(_,_,_)->true |_ ->false) stmt_list in
+	   let check_result = List.map (
+			function
+				If(_,s1,s2) ->
+					     begin
+							 match s1,s2 with
+							| Block(st1), Block(st2) ->(has_return_stmt st1) && (has_return_stmt st2)
+							| _ -> raise(Failure("The statements after if or else should be incldued in {}!"))
+							end
+			 |_ -> false
+			) if_stmt_list in(*get a list "cehck_result" of boolean to tell whether each if statement has a return *)
+			List.fold_left (fun a b -> b||a) false check_result
+
+
+
+(*The following function will judge whether an expression is valid in a fund and expr*)
+
+let rec expr_valid func expr env = 
+	match expr with
+	|Assign(id, e1) -> if exist_id id func env 
+	                      then let type1 = get_type env func id and _ = expr_valid func e1 env and type2 = get_expr_type e1 func env in
+												if type1 = type2 then true
+												else
+													begin
+													match type1, type2 with
+													| INT_TYPE,FLOAT -> true
+													| FLOAT,INT_TYPE ->true
+													| _ ->raise(Failure"Unmathed type in Assign operation!")
+													end
+										else raise(Failure("Undeclared identifier" ^ id ^ " is used!"))
+	|Call(fname,exprlist) ->
+		      if func_name_exist fname env
+					   then let _fulfill_valid_exprs = List.map (fun e -> expr_valid func e env) exprlist in
+						   let _check_type = check_func_paralist_type fname exprlist func env in
+							true
+					else raise(Failure("Undefined function: "^ fname ^ "is used!"))
+	|_ ->
+		try
+			let _ = get_expr_type expr func env in true
+		with Not_found -> raise(Failure("Invalid expression!"))
+
+
+(*The following function will tell you whether a function's body is valid*)
+
+let check_valid_body func env = 
+   let rec check_stmt = 
+		function
+			| Block(stmt_list) -> 
+				let _  = List.map (fun(x) -> check_stmt x) stmt_list in true(*block case*)
+			| ExStmt(expr) -> let vldexpr = expr_valid func expr env and assign_call = is_assign_call func expr in
+			        begin
+								match vldexpr,assign_call with
+								| true, true ->true
+								| true, false -> raise(Failure("There is a statement in function "^func.fname^" which is not a function call or assignment, which is invalid!"))
+								| false, _ -> raise(Failure("There is an invalid expession in function "^ func.fname))
+							end
+				|Return(expr) -> let ret  = get_expr_type expr func env in
+				                     let real_type  = func.ftype in
+														if ret = real_type then true else raise(Failure("Unmatched return type with function's defination!"))
+				|If(expr,stmt1,stmt2) ->
+					let expr_type = get_expr_type expr func env in
+					   let _check_expr_type = 
+							begin
+							   match expr_type with
+								| BOOLEAN -> true
+								| _ -> raise(Failure("expression in If(..) should be type BOOLEAN!"))
+							end
+								in
+								if (check_stmt stmt1) && (check_stmt stmt2)
+								then true
+								else raise(Failure("Invalid statement in the if statement in function: "^ func.fname))
+				|For(_,_,_,stmt1) -> if check_stmt stmt1 then true else raise(Failure("Invalid statement in For statement in function:"^ func.fname))
+				|While(_,stmt1)-> if check_stmt stmt1 then true else raise(Failure("Invalid statement in While statement in function:"^ func.fname))
+				in (*end of check_stmt*)
+      let _ = List.map (check_stmt) func.body in
+			true						     
+
+
+(*check whether a function's body has a return statement*)		
+let func_body_has_return func = 
+	let stmt_list = func.body in
+	   let result = List.exists (function stmt -> match stmt with |Return(_) ->true |_ ->false) stmt_list	in
+		     result  
+(*get all the return statements' corresponding expression type*)
+let fun_get_all_return_type func env= 
+	let stmt_list = func.body in
+	 let f result_list stmt = 
+		match stmt with
+		|Return(expr) -> (get_expr_type expr func env)::result_list 
+		|_ -> result_list in
+	  let result = List.fold_left f [] stmt_list in
+		   result    
+			
+(*check whether a function's return statement's type all fulfills the real return type of this function*)
+let check_return func env =
+	match func.ftype with
+	|  VOID -> if func_body_has_return func then raise(Failure("There should not be return statement in a void function: "^ func.fname)) else true
+	|  f_type -> 
+		let return_type_list  =  fun_get_all_return_type func env in
+	      let f a  =  a= f_type in
+				 if List.for_all  f return_type_list  then true else raise(Failure("At least one return type does not match the function's defination requriement!"))
+
+(*THis will check each function's validity*)
+let check_func f env =
+		let dup_name = fun_exist f env in
+		   let dup_formals = check_fpara_duplicate f in
+			   let dup_vlocals = check_var_duplicate f in
+				   let vbody = check_valid_body f env in
+					   let check_return_result = check_return f env in
+						   let _ = env.functions <- (f) ::env.functions in
+							    true
+
+
+(*check whether there is a main function*)
+
+									
+let exists_main env = 
+	if func_name_exist "main" env
+	   then true else false
+
+
+let check_program var_list fun_list = 
+	let env = {functions = var_list;variables = []} in
+	let _dovalidation = List.map (fun f -> check_fun f env) fun_list in
+	   let  _mainexist = exists_main env in
+		   let _ = print_endline "\nThe semantic check has been finished!\n" in
+			true 
