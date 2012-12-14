@@ -9,6 +9,9 @@
 #include <iostream>
 #include <math.h>
 #include <graphics.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 using namespace std;
 struct point
 {
@@ -554,6 +557,21 @@ int main(int argc, const char * argv[])
    // displayPolygon(poly1);
    // displayPoint(p1);
     cout<<polygonCongruent(poly1, poly2)<<endl;
+	//--------------Graph--------------------
+	int gd=DETECT,gm;
+	int x1 = 10, y1 = 10, x2 = 20, y2 = 20;
+    initgraph(&gd,&gm,"");
+    line(x1,y1,x2,y2);                         //line
+	//bar3d(100, 100, 300, 250, 50, 1);          //bar
+	circle(100, 300, 10);                        //circle
+	//ellipse(int x, int y, int stangle, int endangle,int xradius,int yradius);以(x, y)为中心，xradius，yradius为x轴和y轴半径，从角stangle 开始到endangle结束画一段椭圆线，当stangle=0，endangle=360时， 画出一个完整的椭圆。 
+	//rectangle(int x1, int y1, int x2, inty2); 以(x1, y1)为左上角，(x2, y2)为右下角画一个矩形框。  
+	rectangle(300,200,400,400);
+	//putpixel(int x, int y, int color);  
+	//drawpoly(int numpoints, int far *polypoints); 画一个顶点数为numpoints,各顶点坐标由polypoints给出的多边形
+    putpixel(7,8,1);
+    system("PAUSE");
+	//--------------Graph--------------------
    // line line1 = getLine(p1,p2);
    // displayLine(line1);
    /* point p1 = getPoint(-1,1),p2 = getPoint(1,1),p3 = getPoint(2,0), p4 = getPoint(1,-1),p5= getPoint(-1, -1),p6= getPoint(-2,0);
