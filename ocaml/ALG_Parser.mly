@@ -2,6 +2,7 @@
   open Printf
 	open AST
 %}
+%token TL TS TTL TTS TE T
 %token EOF
 %token FOR LPAREN RPAREN COMMA LBRACKET RBRACKET LBRACE RBRACE SEMI 
 %token INT_KEY FLOAT_KEY ARRAY_KEY STRING_KEY VOID_KEY BOOLEAN_KEY
@@ -11,7 +12,7 @@
 %token <float> NUM
 %token <int> INT
 %token <string> String
-%token PARA INTERS RELAT EE NE  SE LE S L TE E PLUS MINUS MUL DIV PERC SSE LLE  SS LL
+%token PARA INTERS RELAT EE NE  SE LE S L  E PLUS MINUS MUL DIV PERC SSE LLE  SS LL
 
 %nonassoc NOELSE
 %nonassoc ELSE
@@ -20,7 +21,8 @@
 %right E
 %left PLUS MINUS
 %left MUL DIV PERC
-%left PARA INTERS RELAT TE SSE LLE  SS LL
+%left PARA INTERS RELAT TE SSE LLE  SS LL TL TS TTL TTS  T
+
 %left EE NE SE LE S L
 
 
@@ -120,7 +122,7 @@ actuals_list:
 |expr LL expr {GeoBinop($1,LL,$3)}
 |expr SSE expr {GeoBinop($1,SSE,$3)}
 |expr LLE expr {GeoBinop($1,LLE,$3)}
-|expr EE expr {GeoBinop1($1,EE,$3)}
+|expr EE expr {GeoBinop1($1,EE,$3)}i
 |expr NE expr {GeoBinop1($1,NE,$3)}
 |expr SE expr {GeoBinop1($1,SE,$3)}
 |expr LE expr {GeoBinop1($1,LE,$3)}
@@ -128,6 +130,16 @@ actuals_list:
 |expr S expr {GeoBinop1($1,S,$3)}
 | ID E expr {GeoAssign($1,$3)}
 | LPAREN expr RPAREN {$2}
+|expr T expr {GeoBinop($1,T,$3)}
+|expr TS expr {GeoBinop($1,TS,$3)}
+|expr TL expr {GeoBinop($1,TL,$3)}
+|expr TTS expr {GeoBinop($1,TTS,$3)}
+|expr TTL expr {GeoBinop($1,TTL,$3)}
+
+
+
+
+
 */
 expr:
 
@@ -158,6 +170,11 @@ expr:
 |expr SE expr  {Binop($1,SE, $3)}
 |expr L expr  {Binop($1,L, $3)}
 |expr S expr  {Binop($1,S, $3)}
+|expr T expr {Binop($1,T,$3)}
+|expr TS expr {Binop($1,TS,$3)}
+|expr TL expr {Binop($1,TL,$3)}
+|expr TTS expr {Binop($1,TTS,$3)}
+|expr TTL expr {Binop($1,TTL,$3)}
 |ID E expr {Assign($1,$3)}
 |LPAREN expr RPAREN {$2}
 | ID LPAREN actuals_opt RPAREN {Call($1,$3)}

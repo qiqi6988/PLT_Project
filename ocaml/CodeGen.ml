@@ -39,9 +39,13 @@ match expr with
 | Binop( expr1,op ,expr2)->
 begin
 match op with
+|TTS->"(*"^(gen_expr expr1)^")<=(*"^(gen_expr expr2)^")"
+|TTL->"(*"^(gen_expr expr1)^")>=(*"^(gen_expr expr2)^")"
+|TS->"(*"^(gen_expr expr1)^")<(*"^(gen_expr expr2)^")"
+|TL->"(*"^(gen_expr expr1)^")>(*"^(gen_expr expr2)^")"
 |EE->"("^(gen_expr expr1)^")==("^(gen_expr expr2)^")"
 |NE->"("^(gen_expr expr1)^")!=("^(gen_expr expr2)^")"
-|SE->"("^(gen_expr expr1)^")<=("^(gen_expr expr2)^")"
+|SE-> "("^(gen_expr expr1)^")<=("^(gen_expr expr2)^")"
 |LE->"("^(gen_expr expr1)^")>=("^(gen_expr expr2)^")"
 |S->"("^(gen_expr expr1)^")<("^(gen_expr expr2)^")"
 |L->"("^(gen_expr expr1)^")>("^(gen_expr expr2)^")"
@@ -53,7 +57,7 @@ match op with
 |PARA->"(isParallel(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |INTERS->"(getIntersect(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |RELAT->"(getRelation(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
-|TE->"(isSimilar(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
+|T->"(isSimilar(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |SS->"(isPerimeterLessThan(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |LL->"(isPerimeterLargerThan(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |SSE->"(isPerimeterLessOrEqual(*"^gen_expr expr1^",*"^gen_expr expr2^"))"

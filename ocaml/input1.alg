@@ -32,6 +32,16 @@ def int main()
 	
 	if(e1<<=e2)
 	printf("e1lesse2");
+
+	if(e1~~<e2)
+	printf("e1smaller");
+	if(e1~~>e2)
+	printf("e1larger");
+	
+	e1~<e2;
+	e1~>e2;
+	printf("ok");
+	
 	
 }
 

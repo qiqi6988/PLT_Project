@@ -374,6 +374,122 @@ bool isPerimeterLargerOrEqual(ellipse e1,ellipse e2)
 	return (perimeter1>=perimeter2);
 }
 
+
+
+
+float getTriangleArea(polygon triangle)
+{
+    if(triangle.pointNum != 3)
+    {
+        printf("error in getting triangle area! This is not a triangle!\n");
+        return 0;
+    }
+    point **C = triangle.pointCollection;
+    
+    float result = 0;
+    result = result + (*C[0]).x*((*C[1]).y-(*C[2]).y);
+    result = result + (*C[1]).x*((*C[2]).y-(*C[0]).y);
+    result = result + (*C[2]).x*((*C[0]).y-(*C[1]).y);
+    return fabs(result/2);
+}
+
+polygon * getPolygon(int num, point ** collection)
+{
+    polygon * result=new polygon(num,collection);
+    return result;
+}
+
+float getPolygonArea(polygon p)
+{
+    int num =p.pointNum;
+    float result =0;
+    point ** C = p.pointCollection;
+    if(num<=2)
+        return 0;
+    if(num == 3)
+        return getTriangleArea(p);
+    else
+    {
+        point * C1[3] = {C[num-2],C[num-1],C[0]};
+        point * C2[3] = {C[0],C[1],C[2]};
+        polygon t1 = *getPolygon(3,C1);
+        polygon t2 = *getPolygon(3,C2);
+        result = result + getTriangleArea(t1);
+        result = result + getTriangleArea(t2);//first add the two trianlges on the edge
+        for(int i = 2;i<num-2;i++)
+        {
+            point *tempC[3] = {C[0],C[i],C[i+1]};
+            polygon tempT = *getPolygon(3, tempC);
+            result = result+getTriangleArea(tempT);
+            
+        }
+        return result;
+        
+    }
+}
+
+bool operator<= (polygon p1,polygon p2)
+{
+	float area1=getPolygonArea(p1);
+	float area2=getPolygonArea(p2);
+	return (area1<=area2);
+}
+
+bool operator< (polygon p1,polygon p2)
+{
+	float area1=getPolygonArea(p1);
+	float area2=getPolygonArea(p2);
+	return (area1<area2);
+}
+
+bool operator>= (polygon p1,polygon p2)
+{
+	float area1=getPolygonArea(p1);
+	float area2=getPolygonArea(p2);
+	return (area1>=area2);
+}
+
+bool operator> (polygon p1,polygon p2)
+{
+	float area1=getPolygonArea(p1);
+	float area2=getPolygonArea(p2);
+	return (area1>area2);
+}
+
+float getEllipseArea(ellipse e)
+{
+    return 3.14159*e.a*e.b;
+}
+
+
+bool operator<= (ellipse p1,ellipse p2)
+{
+	float area1=getEllipseArea(p1);
+	float area2=getEllipseArea(p2);
+	return (area1<=area2);
+}
+
+bool operator< (ellipse p1,ellipse p2)
+{
+	float area1=getEllipseArea(p1);
+	float area2=getEllipseArea(p2);
+	return (area1<area2);
+}
+
+bool operator>= (ellipse p1,ellipse p2)
+{
+	float area1=getEllipseArea(p1);
+	float area2=getEllipseArea(p2);
+	printf("%f%f\n",area1,area2);
+	return (area1>=area2);
+}
+
+bool operator> (ellipse p1,ellipse p2)
+{
+	float area1=getEllipseArea(p1);
+	float area2=getEllipseArea(p2);
+	return (area1>area2);
+}
 /*
 int main()
 {
@@ -387,11 +503,15 @@ int main()
 	//new polygon(num, new point*[num]{point(1.1,1.2),point(1.1,1.2),point(1.1,1.2)} );
 	//new point*[num]{new point(1.1,1.2), new point(1.1,1.2)};
 	printf("%d\n", (new polygon(3, new point*[3]{new point(1.1,1.2), new point(1.1,1.2), new point(3.1,1.2)}            ))->pointNum);
-	polygon *shape1=new polygon(3, new point*[3]{new point(1.1,1.2), new point(1.1,1.2), new point(3.1,1.2)}         );
-	polygon *shape2=new polygon(3, new point*[3]{new point(1.1,1.2), new point(1.1,1.2), new point(3.1,1.2)}          );
+	polygon *shape1=new polygon(3, new point*[3]{new point(1.1,1.2), new point(1.1,1.3), new point(3.1,1.2)}         );
+	polygon *shape2=new polygon(3, new point*[3]{new point(1.1,0.5), new point(1.1,1.2), new point(3.1,1.2)}          );
 	isSimilar(*shape1,*shape2);
 	if(isPerimeterLargerThan(*shape1,*shape2))printf("true");
 	else printf("false");
+	printf("polygonarea:%f\n",getPolygonArea(*shape1));
+	if(*shape1<=*shape2)
+	printf("polyarealess\n");
+	else
+	printf("polyarealarger\n");
 }
 */
-
