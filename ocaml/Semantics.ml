@@ -164,6 +164,12 @@ let get_func_return_type func_name env =
 	with Not_found -> raise(Failure("Function "^ func_name ^" is not found in the function defination list"))
 
 
+(*This function will help check whether an ellipse's axis length is positive*)
+let check_ellipse_axis expr = 
+	match expr with
+	| NUM(a) ->if a>0.0 then true else raise(Failure("The axis length of an ellipse mut be positive!"))
+  | INT(a) ->if a>0 then true else raise(Failure("The axis length of an ellipse mut be positive!"))
+	| _ -> true 
 
 (*This function will return the type of an expression*)
 (*env: the environment including the global variable list and function list*)
@@ -202,6 +208,7 @@ let rec get_expr_type expr func env =
 						else raise(Failure("Error in Line expression"))		  		
 	| EllipseEx(Ellipse(Point(expr1,expr2),expr3,expr4)) -> 
 		let check_temp_expr temp_expr = 
+			let _check1 = check_ellipse_axis expr3 and _check2 = check_ellipse_axis expr4 in
 			     let t = get_expr_type temp_expr func env (*get the type of one expression*)				
 				   in
 				   	begin
@@ -359,8 +366,10 @@ let is_assign_call func = function
 (*exprlist: the expression list which performs as the parameters when called*)
 (*func: the function in which fname is called*)
 (*env: the big enviornment*)
-let check_func_paralist_type fname exprlist func env = 
-	let arg_type_list = List.map (fun(e) -> get_expr_type e func env) exprlist (*When you do the function call, you need to cehck the expr list matches every claimed parameter of the function*)
+
+let check_func_paralist_type fname exprlist func1 env = 
+	let func = return_func_given_name fname env in 
+	let arg_type_list = List.map (fun(e) -> get_expr_type e func1 env) exprlist (*When you do the function call, you need to cehck the expr list matches every claimed parameter of the function*)
 	  in
 		if(List.length arg_type_list != List.length func.formal_list)
 		    then raise(Failure("The numebr of parameters given when calling function "^ func.fname ^" is worng!"))
@@ -379,8 +388,6 @@ let check_func_paralist_type fname exprlist func env =
 							end  (*end of check_one_by_one*)
 			  in 
 				     List.fold_left check_one_by_one 0 arg_type_list
-
-
 (*The following function check whether a statements list end with a return statement*)
 
 let has_return_stmt stmt_list = 
@@ -421,7 +428,7 @@ let rec expr_valid func expr env =
 													| FLOAT,INT_TYPE ->true
 													| _ ->raise(Failure"Unmathed type in Assign operation!")
 													end
-										else raise(Failure("Undeclared identifier" ^ id ^ " is used!"))
+										else raise(Failure("Undeclared identifier " ^ id ^ " is used!"))
 	|Call(fname,exprlist) ->
 		      if func_name_exist fname env
 					   then let _fulfill_valid_exprs = List.map (fun e -> expr_valid func e env) exprlist in
@@ -524,8 +531,22 @@ let exist_v_name vlist vdecl =
 let dup_in_global env = 
 	 List.for_all (exist_v_name env.variables) env.variables
 
+
+(*define all the built-in functions*)
+let f1 = {ftype = VOID;fname = "displayPoint";formal_list = [(POINT,"a")];locals = [];body = []}
+let f2 = {ftype = VOID;fname = "displayLine";formal_list = [(LINE,"a")];locals = [];body = []}
+let f3 = {ftype = VOID;fname = "displayEllipse";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
+let f4 = {ftype = VOID;fname = "displayPolygon";formal_list = [(POLYGON,"a")];locals = [];body = []}
+
+let f5 = {ftype = VOID;fname = "drawPoint";formal_list = [(POINT,"a")];locals = [];body = []}
+let f6 = {ftype = VOID;fname = "drawLine";formal_list = [(LINE,"a")];locals = [];body = []}
+let f7 = {ftype = VOID;fname = "drawEllipse";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
+let f8 = {ftype = VOID;fname = "drawPolygon";formal_list = [(POLYGON,"a")];locals = [];body = []}
+let f9 = {ftype = VOID;fname = "print";formal_list = [(STRING,"a")];locals = [];body = []}
+
+let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9]
 let check_program (var_list,fun_list) = 
-	let env = {functions = [];variables = var_list} in
+	let env = {functions = built_in;variables = var_list} in
          let _global_check = dup_in_global env in
 	let _dovalidation = List.map (fun f -> check_func f env) fun_list in
 	   let  _mainexist = exists_main env in
