@@ -51,7 +51,7 @@ let rec	 gen_expr expr=
 			|DIV->"("^(gen_expr expr1)^")/("^(gen_expr expr2)^")"
 			|PERC ->"("^(gen_expr expr1)^")%("^(gen_expr expr2)^")"
 			|PARA->"(isParallel(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
-			|INTERS->"(getIntersect("^gen_expr expr1^","^gen_expr expr2^"))"
+			|INTERS->"(getIntersect(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 			|RELAT->"(getRelation("^gen_expr expr1^","^gen_expr expr2^"))"
 			|TE->"(isCongruent("^gen_expr expr1^","^gen_expr expr2^"))"
 			|SS->"(isPerimeterLessThan("^gen_expr expr1^","^gen_expr expr2^"))"
