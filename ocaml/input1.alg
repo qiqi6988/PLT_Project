@@ -6,6 +6,10 @@ def int main()
         boolean a;
 	ellipse e1;
  	ellipse e2;
+	polygon poly1;
+	polygon poly2;
+	poly1=[[0,0],[0.5,1],[1,0]];
+	poly2=[[0,0],[0.5,1],[1,0]];
         l1=[[1,1],[2,2]];
         l2=[[3,3],[4,4]];
 	e1=[[1,1],1,1];
@@ -17,8 +21,13 @@ def int main()
 	p=l1^l2;
 	displayPoint(p);
 	printf(e1|-e2);
-	printf("\n");
+
         printf(l1|-e1);
+
+	if(poly1~poly2)
+	printf("true");
+
+	
 	
 }
 
