@@ -24,9 +24,9 @@ rule token=parse
 | "def" {DEF}|"default" {DEFAULT}
 | "\"" string* "\"" as str {String(str)}
 |id		as identifier {ID(identifier)}
-|digit+ as int_num {INT(int_of_string int_num)} 
-| (digit+'.'digit*|'.'digit+)('e'['+' '-']?digit+)?
-| digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
+|['+' '-']?digit+ as int_num {INT(int_of_string int_num)} 
+|['+' '-']?(digit+'.'digit*|'.'digit+)('e'['+' '-']?digit+)?
+|['+' '-']?digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
 (*punctuation*)
 |"(" {LPAREN} | ")" {RPAREN} | "{" {LBRACE} | "}" {RBRACE} 
 | "[" {LBRACKET } | "]" {RBRACKET } |"," {COMMA } | ";" {SEMI}
@@ -36,7 +36,7 @@ rule token=parse
 |"<<=" {SSE}|">>=" {LLE}
 |"<<" {SS}|">>" {LL}
 |"<=" {SE}|">=" {LE}
-|"<" {S}|">" {L}|"~=" {TE}
+|"<" {S}|">" {L}|"~" {TE}
 (*basic operators*)
 |"+" {PLUS} |"-" {MINUS} | "*" {MUL}
 |"/" {DIV}|"%" {PERC} |"=" {E}
