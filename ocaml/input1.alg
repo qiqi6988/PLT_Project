@@ -8,7 +8,7 @@ def int main()
  	ellipse e2;
 	polygon poly1;
 	polygon poly2;
-	poly1=[[0,0],[0.5,1],[1,0]];
+	poly1=[[0,0],[-0.5,-1],[-1,0]];
 	poly2=[[0,0],[0.5,1],[1,0]];
         l1=[[1,1],[2,2]];
         l2=[[3,3],[4,4]];
@@ -27,7 +27,11 @@ def int main()
 	if(poly1~poly2)
 	printf("true");
 
+	if(poly1<<poly2)
+	printf("poly1lesspoly2");
 	
+	if(e1<<=e2)
+	printf("e1lesse2");
 	
 }
 

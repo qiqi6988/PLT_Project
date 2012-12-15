@@ -294,6 +294,86 @@ bool isSimilar(polygon shape1, polygon shape2)//judge whether two polygons are s
     }
 }
 
+
+
+
+
+
+float getPolygonPerimeter(polygon p)
+{
+    int num = p.pointNum;
+    float result = 0;
+    point ** C = p.pointCollection;
+    for(int i = 0;i<num;i++)
+    {
+        result = result +getDis(C[i%num],C[(i+1)%num]);
+    }
+    return result;
+}
+
+
+float getEllipsePerimeter(ellipse e)
+{
+    return 3.14159*(3*(e.a+e.b)-sqrt((3*e.a+e.b)*(e.a+3*e.b)));
+}
+
+bool isPerimeterLessThan(polygon p1,polygon p2)
+{
+	float perimeter1=getPolygonPerimeter(p1);
+	float perimeter2=getPolygonPerimeter(p2);
+	return (perimeter1<perimeter2);
+}
+
+bool isPerimeterLessThan(ellipse e1,ellipse e2)
+{
+	float perimeter1=getEllipsePerimeter(e1);
+	float perimeter2=getEllipsePerimeter(e2);
+	return (perimeter1<perimeter2);
+}
+
+
+bool isPerimeterLessOrEqual(polygon p1,polygon p2)
+{
+	float perimeter1=getPolygonPerimeter(p1);
+	float perimeter2=getPolygonPerimeter(p2);
+	return (perimeter1<=perimeter2);
+}
+
+bool isPerimeterLessOrEqual(ellipse e1,ellipse e2)
+{
+	float perimeter1=getEllipsePerimeter(e1);
+	float perimeter2=getEllipsePerimeter(e2);
+	return (perimeter1<=perimeter2);
+}
+
+bool isPerimeterLargerThan(polygon p1,polygon p2)
+{
+	float perimeter1=getPolygonPerimeter(p1);
+	float perimeter2=getPolygonPerimeter(p2);
+	return (perimeter1>perimeter2);
+}
+
+bool isPerimeterLargerThan(ellipse e1,ellipse e2)
+{
+	float perimeter1=getEllipsePerimeter(e1);
+	float perimeter2=getEllipsePerimeter(e2);
+	return (perimeter1>perimeter2);
+}
+
+bool isPerimeterLargerOrEqual(polygon p1,polygon p2)
+{
+	float perimeter1=getPolygonPerimeter(p1);
+	float perimeter2=getPolygonPerimeter(p2);
+	return (perimeter1>=perimeter2);
+}
+
+bool isPerimeterLargerOrEqual(ellipse e1,ellipse e2)
+{
+	float perimeter1=getEllipsePerimeter(e1);
+	float perimeter2=getEllipsePerimeter(e2);
+	return (perimeter1>=perimeter2);
+}
+
 /*
 int main()
 {
@@ -310,5 +390,8 @@ int main()
 	polygon *shape1=new polygon(3, new point*[3]{new point(1.1,1.2), new point(1.1,1.2), new point(3.1,1.2)}         );
 	polygon *shape2=new polygon(3, new point*[3]{new point(1.1,1.2), new point(1.1,1.2), new point(3.1,1.2)}          );
 	isSimilar(*shape1,*shape2);
+	if(isPerimeterLargerThan(*shape1,*shape2))printf("true");
+	else printf("false");
 }
 */
+
