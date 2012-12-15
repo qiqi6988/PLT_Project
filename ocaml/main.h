@@ -128,7 +128,37 @@ char * getRelation(ellipse  circle1, ellipse  circle2)
 }
 
 
+char * getRelation(line l, ellipse e)
+{
+    float y1 = l.p1->y, y2 = l.p2->y, x1 = l.p1->x, x2 = l.p2->x;
+    float h = e.focusPoint->x, k = e.focusPoint->y, a = e.a, b= e.b;
+    float k1 = y1-y2, k2 = x2-x1, k3 = 2*x1*y1-x1*y2-y1*x2;
+    float Ba = (a*a*k1*k1)/(k2*k2)+b*b;
+    float Bb = (2*a*a*k*k1)/k2 - (2*a*a*k1*k3)/(k2*k2)-2*b*b*h;
+    float Bc = (a*a*k3*k3)/(k2*k2) +a*a*k*k -(2*a*a*k*k3)/(k2)+b*b*h*h-a*a*b*b;
+    //cout<<Ba<<endl;
+    char * str=(char*)malloc(sizeof(char)*30);
+    if(k2 == 0)// special case for the vertical line
+    {
+       if(fabs((k3/k1)-h) == a)
+           {strcpy(str,"tangent");return str;}//tangent
+       else if((k3/k1)>h-a && (k3/k1)<h+a)
+         { strcpy(str,"secant");return str;}//secant
+        else
+           {strcpy(str,"seperate");return str;}//seperate
+      
+    }
+    float temp = Bb*Bb-4*Ba*Bc;
+  //  cout<<temp<<endl;
+   // cout<<temp<<endl;
+    if(temp>0)
+        {strcpy(str,"secant");return str;}//secant
+    else if(temp==0)
+        {strcpy(str,"tangent");return str;}//tangent
+    else
+       { strcpy(str,"seperate");return str;}//seperate
 
+}
 /*
 int main()
 {
