@@ -19,10 +19,10 @@ let gen_type=function
 |FLOAT -> "float"
 |VOID -> "void"
 |BOOLEAN -> "bool"
-| POINT -> "Point"
-|LINE -> "Line"
-|POLYGON-> "Polygon"
-|ELLIPSE	-> "Ellipse"
+| POINT -> "point *"
+|LINE -> "line *"
+|POLYGON-> "polygon *"
+|ELLIPSE	-> "ellipse *"
 |ARRAY ->"array"
 |STRING->"string"
 
@@ -50,7 +50,7 @@ let rec	 gen_expr expr=
 			|MUL->"("^(gen_expr expr1)^")*("^(gen_expr expr2)^")"
 			|DIV->"("^(gen_expr expr1)^")/("^(gen_expr expr2)^")"
 			|PERC ->"("^(gen_expr expr1)^")%("^(gen_expr expr2)^")"
-			|PARA->"(isParallel("^gen_expr expr1^","^gen_expr expr2^"))"
+			|PARA->"(isParallel(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 			|INTERS->"(getIntersect("^gen_expr expr1^","^gen_expr expr2^"))"
 			|RELAT->"(getRelation("^gen_expr expr1^","^gen_expr expr2^"))"
 			|TE->"(isCongruent("^gen_expr expr1^","^gen_expr expr2^"))"
@@ -172,7 +172,7 @@ let gen_fdecl fdecl=
 let gen_program (var_list, fdecl_list)=
 	let vars=gen_locals var_list in
 	let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
-	let header="#include \"main.h \"\n" in
+	let header="#include \"main.h\"\n#include \"stdio.h\"\n" in
 	header^vars^"\n"^fdecls
 
 
