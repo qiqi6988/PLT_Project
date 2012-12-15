@@ -510,7 +510,7 @@ let check_func f env =
 									
 let exists_main env = 
 	if func_name_exist "main" env
-	   then true else false
+	   then true else raise(Failure("No Main Function exist!"))
 (*the following three functions will judge whether there is global variables redefiend!*)
 let equal_variable_name (a,b) (c,d) = 
 	b=d
