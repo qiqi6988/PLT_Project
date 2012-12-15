@@ -41,6 +41,41 @@ polygon::polygon(int pointNum1, point ** pointCollection1){pointNum=pointNum1;po
 
 
 /************************The following code are used to judge the relation between two lines*******************/
+void displayPoint(point *p)
+{
+    printf("This is a point!\nIt is:\n%f %f", p->x,p->y);
+    
+}
+point * getPoint(float f1, float f2)
+{
+    point *p=new point(f1,f2);
+    return p;
+}
+
+point *getIntersect(line l1, line l2)
+{
+    point *result = getPoint(0,0);
+    if(isParallel(l1,l2))
+    {
+        printf("these two linse are parallel!\n");
+        return result;// if these two lines are parallel, just return the original point with a warning.
+    }
+    else
+    {
+        float x1 = l1.p1->x, y1 = l1.p1->y, x2 = l1.p2->x,y2 = l1.p2->y;
+        float h1 = l2.p1->x, k1 = l2.p1->y, h2 = l2.p2->x, k2 = l2.p2->y;
+        float temp2 = (k1-k2)/(h1-h2), temp1 = (y1-y2)/(x1-x2);
+        float a = temp1-temp2,b = k1-y1-h1*temp2+x1*temp1;
+        float resultX = b/a;
+        float resultY = temp1*(resultX-x1) +y1;
+        result = getPoint(resultX, resultY);
+        return result;
+    }
+    
+}// get the intersect point of two lines
+
+
+
 bool isParallel(line l1, line l2)
 {
     float deltaX1 = l1.p1->x-l1.p2->x,deltaY1 = l1.p1->y-l1.p2->y;
