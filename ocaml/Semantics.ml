@@ -1,7 +1,5 @@
 open AST
 
-module NameMap = Map.Make(String)
-
 
 type env = {
 	mutable functions : fdecl list;
@@ -9,21 +7,6 @@ type env = {
 	}
 
 
-let check_program (vars,funcs)=
-	let globals=List.fold_left (fun globals (var_type,var_name)->NameMap.add var_name var_type globals) NameMap.empty vars in
-
-	let a=NameMap.iter (fun var_name var_type->print_string var_name) globals in
-	
-	let functions=List.fold_left (fun functions fdecl->NameMap.add fdecl.fname fdecl functions) NameMap.empty funcs in
-	let b=NameMap.iter (fun func_name func_decl->print_string func_name) functions in
-        true
-
-(*the type env*)
-
-type env = {
-	functions : fdecl list ;
-	variables : (var_type * string) list ;
-	} 
 
 (*this is a function used in other functions*)
 (*It is used to test whether a function's name is equal to a string 'name'*)
@@ -85,7 +68,7 @@ let get_para_type func fpname =
 		   let para  =List.find (function (a,b) -> b = fpname) func.formal_list in (*check whether fname is in  func's formal_list*)
 			   let (para_type,_) = para in
 				    para_type
-	with Not_found ->raise(Failure("In the function" ^ func.fname ^" does not have the parameter "^ fpname));;	
+	with Not_found ->raise(Failure("In the function" ^ func.fname ^" does not have the parameter "^ fpname))
 
 
 (*The following function will get you the type of a local variable in a function if you give variable's name*)
@@ -151,7 +134,7 @@ let count_fpara func = function (_,b)
 let check_fpara_duplicate func = 
 	List.map (count_fpara func) func.formal_list  
 
-(*This function will check whether a (var_type*string) has a var_name that appears more than once in a function's local variable list)
+(*This function will check whether a (var_type*string) has a var_name that appears more than once in a function's local variable list*)
 let count_var func = function (_,b)
   -> let f count (_,c) = 
 		  if c=b then count+1
@@ -168,25 +151,9 @@ let count_var func = function (_,b)
 let check_var_duplicate func = 
 	List.map (count_var func) func.locals
 
-(*check whether a string represents a number*)
-let is_int x =
-	try ignore(int_of_string x); true
-	with _ ->false
 
 
-let is_int s =
-	try ignore (int_of_string s); true
-	with _ -> false
 
-let is_float s =
-	try ignore (float_of_string s); true
-	with _ -> false
-
-let is_letter s = string_match (regexp "[A-Za-z]") s 0
-
-let is_string s = string_match (regexp "\".*\"") s 0
-
-let is_string_bool = function "true" -> true | "false" -> true | _ -> false
 
 
 (*This function will get you the return type of a function if you give me the fname*)
@@ -287,7 +254,7 @@ let rec get_expr_type expr func env =
 					| LINE, EE, LINE -> BOOLEAN
 					| POINT, EE, POINT -> BOOLEAN
 					| STRING, EE, STRING -> BOOLEAN
-					| BOOLEAN, NE, BOOLEAN           (*NE*)
+					| BOOLEAN, NE, BOOLEAN->BOOLEAN      (*NE*)
 					| INT_TYPE, NE, INT_TYPE -> BOOLEAN
 					| INT_TYPE, NE, FLOAT -> BOOLEAN
 					| FLOAT, NE, INT_TYPE -> BOOLEAN
@@ -529,11 +496,11 @@ let check_return func env =
 
 (*THis will check each function's validity*)
 let check_func f env =
-		let dup_name = fun_exist f env in
-		   let dup_formals = check_fpara_duplicate f in
-			   let dup_vlocals = check_var_duplicate f in
-				   let vbody = check_valid_body f env in
-					   let check_return_result = check_return f env in
+		let _dup_name = fun_exist f env in
+		   let _dup_formals = check_fpara_duplicate f in
+			   let _dup_vlocals = check_var_duplicate f in
+				   let _vbody = check_valid_body f env in
+					   let _check_return_result = check_return f env in
 						   let _ = env.functions <- (f) ::env.functions in
 							    true
 
@@ -543,12 +510,24 @@ let check_func f env =
 									
 let exists_main env = 
 	if func_name_exist "main" env
-	   then true else false
+	   then true else raise(Failure("No Main Function exist!"))
+(*the following three functions will judge whether there is global variables redefiend!*)
+let equal_variable_name (a,b) (c,d) = 
+	b=d
+	
+let exist_v_name vlist vdecl = 
+	let new_fun count x = 
+		if(equal_variable_name vdecl x) then count+1 else count in
+		 let result = List.fold_left new_fun 0 vlist in
+		   if result <=1 then true else raise(Failure("Global Variable has been redefined!"))
+	
+let dup_in_global env = 
+	 List.for_all (exist_v_name env.variables) env.variables
 
-
-let check_program var_list fun_list = 
-	let env = {functions = var_list;variables = []} in
-	let _dovalidation = List.map (fun f -> check_fun f env) fun_list in
+let check_program (var_list,fun_list) = 
+	let env = {functions = [];variables = var_list} in
+         let _global_check = dup_in_global env in
+	let _dovalidation = List.map (fun f -> check_func f env) fun_list in
 	   let  _mainexist = exists_main env in
 		   let _ = print_endline "\nThe semantic check has been finished!\n" in
 			true 
