@@ -324,7 +324,7 @@ bool isSimilar(polygon shape1, polygon shape2)//judge whether two polygons are s
 
 
 
-float getPolygonPerimeter(polygon p)
+float Perimeter(polygon p)
 {
     int num = p.pointNum;
     float result = 0;
@@ -337,65 +337,65 @@ float getPolygonPerimeter(polygon p)
 }
 
 
-float getEllipsePerimeter(ellipse e)
+float Perimeter(ellipse e)
 {
     return 3.14159*(3*(e.a+e.b)-sqrt((3*e.a+e.b)*(e.a+3*e.b)));
 }
 
 bool isPerimeterLessThan(polygon p1,polygon p2)
 {
-	float perimeter1=getPolygonPerimeter(p1);
-	float perimeter2=getPolygonPerimeter(p2);
+	float perimeter1=Perimeter(p1);
+	float perimeter2=Perimeter(p2);
 	return (perimeter1<perimeter2);
 }
 
 bool isPerimeterLessThan(ellipse e1,ellipse e2)
 {
-	float perimeter1=getEllipsePerimeter(e1);
-	float perimeter2=getEllipsePerimeter(e2);
+	float perimeter1=Perimeter(e1);
+	float perimeter2=Perimeter(e2);
 	return (perimeter1<perimeter2);
 }
 
 
 bool isPerimeterLessOrEqual(polygon p1,polygon p2)
 {
-	float perimeter1=getPolygonPerimeter(p1);
-	float perimeter2=getPolygonPerimeter(p2);
+	float perimeter1=Perimeter(p1);
+	float perimeter2=Perimeter(p2);
 	return (perimeter1<=perimeter2);
 }
 
 bool isPerimeterLessOrEqual(ellipse e1,ellipse e2)
 {
-	float perimeter1=getEllipsePerimeter(e1);
-	float perimeter2=getEllipsePerimeter(e2);
+	float perimeter1=Perimeter(e1);
+	float perimeter2=Perimeter(e2);
 	return (perimeter1<=perimeter2);
 }
 
 bool isPerimeterLargerThan(polygon p1,polygon p2)
 {
-	float perimeter1=getPolygonPerimeter(p1);
-	float perimeter2=getPolygonPerimeter(p2);
+	float perimeter1=Perimeter(p1);
+	float perimeter2=Perimeter(p2);
 	return (perimeter1>perimeter2);
 }
 
 bool isPerimeterLargerThan(ellipse e1,ellipse e2)
 {
-	float perimeter1=getEllipsePerimeter(e1);
-	float perimeter2=getEllipsePerimeter(e2);
+	float perimeter1=Perimeter(e1);
+	float perimeter2=Perimeter(e2);
 	return (perimeter1>perimeter2);
 }
 
 bool isPerimeterLargerOrEqual(polygon p1,polygon p2)
 {
-	float perimeter1=getPolygonPerimeter(p1);
-	float perimeter2=getPolygonPerimeter(p2);
+	float perimeter1=Perimeter(p1);
+	float perimeter2=Perimeter(p2);
 	return (perimeter1>=perimeter2);
 }
 
 bool isPerimeterLargerOrEqual(ellipse e1,ellipse e2)
 {
-	float perimeter1=getEllipsePerimeter(e1);
-	float perimeter2=getEllipsePerimeter(e2);
+	float perimeter1=Perimeter(e1);
+	float perimeter2=Perimeter(e2);
 	return (perimeter1>=perimeter2);
 }
 
@@ -424,7 +424,7 @@ polygon * getPolygon(int num, point ** collection)
     return result;
 }
 
-float getPolygonArea(polygon p)
+float Area(polygon p)
 {
     int num =p.pointNum;
     float result =0;
@@ -455,33 +455,33 @@ float getPolygonArea(polygon p)
 
 bool operator<= (polygon p1,polygon p2)
 {
-	float area1=getPolygonArea(p1);
-	float area2=getPolygonArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1<=area2);
 }
 
 bool operator< (polygon p1,polygon p2)
 {
-	float area1=getPolygonArea(p1);
-	float area2=getPolygonArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1<area2);
 }
 
 bool operator>= (polygon p1,polygon p2)
 {
-	float area1=getPolygonArea(p1);
-	float area2=getPolygonArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1>=area2);
 }
 
 bool operator> (polygon p1,polygon p2)
 {
-	float area1=getPolygonArea(p1);
-	float area2=getPolygonArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1>area2);
 }
 
-float getEllipseArea(ellipse e)
+float Area(ellipse e)
 {
     return 3.14159*e.a*e.b;
 }
@@ -489,30 +489,30 @@ float getEllipseArea(ellipse e)
 
 bool operator<= (ellipse p1,ellipse p2)
 {
-	float area1=getEllipseArea(p1);
-	float area2=getEllipseArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1<=area2);
 }
 
 bool operator< (ellipse p1,ellipse p2)
 {
-	float area1=getEllipseArea(p1);
-	float area2=getEllipseArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1<area2);
 }
 
 bool operator>= (ellipse p1,ellipse p2)
 {
-	float area1=getEllipseArea(p1);
-	float area2=getEllipseArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	printf("%f%f\n",area1,area2);
 	return (area1>=area2);
 }
 
 bool operator> (ellipse p1,ellipse p2)
 {
-	float area1=getEllipseArea(p1);
-	float area2=getEllipseArea(p2);
+	float area1=Area(p1);
+	float area2=Area(p2);
 	return (area1>area2);
 }
 
@@ -624,7 +624,7 @@ int main()
 	isSimilar(*shape1,*shape2);
 	if(isPerimeterLargerThan(*shape1,*shape2))printf("true");
 	else printf("false");
-	printf("polygonarea:%f\n",getPolygonArea(*shape1));
+	printf("polygonarea:%f\n",Area(*shape1));
 	if(*shape1<=*shape2)
 	printf("polyarealess\n");
 	else
