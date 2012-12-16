@@ -5,7 +5,7 @@
 
 let digit = ['0'-'9']
 let id = ['a'-'z' 'A'-'Z'] ['a'-'z' 'A'-'Z' '0'-'9' '_']*
-let string=['a'-'z' 'A'-'Z' '0'-'9' '_']
+let string=['a'-'z' 'A'-'Z' '0'-'9' '_' ' ']
 let ignore=[' ' '\t' '\r' '\n']
 
 rule token=parse
@@ -22,6 +22,7 @@ rule token=parse
 | "else" {ELSE}|"elseif" {ELSEIF}|"case" {CASE}|"return" {RETURN}
 | "switch" {SWITCH}|"continue" {CONTINUE}|"break" {BREAK}
 | "def" {DEF}|"default" {DEFAULT}
+| "and" {AND} |"not" {NOT}|"or" {OR}
 | "\"" string* "\"" as str {String(str)}
 |"+" {PLUS} |"-." {MINUS}
 |id		as identifier {ID(identifier)}

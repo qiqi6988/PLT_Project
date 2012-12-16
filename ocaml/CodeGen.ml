@@ -36,6 +36,7 @@ match expr with
 | NUM(f) ->string_of_float f
 | INT(i)-> string_of_int i
 | ID(id)-> id
+|Not(expr)->"!"^(gen_expr expr)
 | Binop( expr1,op ,expr2)->
 begin
 match op with
@@ -52,6 +53,8 @@ match op with
 |L->"("^(gen_expr expr1)^")>("^(gen_expr expr2)^")"
 |PLUS->"("^(gen_expr expr1)^")+("^(gen_expr expr2)^")"
 |MINUS->"("^(gen_expr expr1)^")-("^(gen_expr expr2)^")"
+|AND->"("^(gen_expr expr1)^")&&("^(gen_expr expr2)^")"
+|OR->"("^(gen_expr expr1)^")||("^(gen_expr expr2)^")"
 |MUL->"("^(gen_expr expr1)^")*("^(gen_expr expr2)^")"
 |DIV->"("^(gen_expr expr1)^")/("^(gen_expr expr2)^")"
 |PERC ->"("^(gen_expr expr1)^")%("^(gen_expr expr2)^")"

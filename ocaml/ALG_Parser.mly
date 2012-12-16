@@ -2,6 +2,7 @@
   open Printf
 	open AST
 %}
+%token AND OR NOT
 %token TL TS TTL TTS TE T QE 
 %token EOF
 %token FOR LPAREN RPAREN COMMA LBRACKET RBRACKET LBRACE RBRACE SEMI 
@@ -20,6 +21,7 @@
 %right E
 %left PLUS MINUS
 %left MUL DIV PERC
+%left AND OR NOT
 %left PARA INTERS RELAT TE SSE LLE  SS LL TL TS TTL TTS  T QE
 
 %left EE NE SE LE S L
@@ -175,6 +177,9 @@ expr:
 |expr TTS expr {Binop($1,TTS,$3)}
 |expr TTL expr {Binop($1,TTL,$3)}
 |expr QE expr {Binop($1,QE,$3)}
+|expr AND expr {Binop($1,AND,$3)}
+|expr OR expr {Binop($1,OR,$3)}
+|NOT expr {Not($2)}
 |ID E expr {Assign($1,$3)}
 |LPAREN expr RPAREN {$2}
 | ID LPAREN actuals_opt RPAREN {Call($1,$3)}

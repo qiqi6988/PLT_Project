@@ -14,6 +14,8 @@ def int main()
 		print("l1 parallel l2");
 		}
 	}
-	if(l1//[[1,2],[2,3]])
+
+(!	if(l1//[[1,2],[2,3]])
 	print("parallel");
+!)
 }
