@@ -71,6 +71,7 @@ begin
 match funcname with
 |"Area"-> funcname^"(*"^(gen_actual_list actual_list)^")"
 | "Perimeter"-> funcname^"(*"^(gen_actual_list actual_list)^")"
+| "Move"->funcname^"("^(gen_move_list actual_list)^")"
 |_ ->funcname^"("^(gen_actual_list actual_list)^")"
 end
 | String(str)->str
@@ -82,6 +83,8 @@ end
 and gen_actual_list =function
 actual_list ->"("^(String.concat "," (List.map gen_expr actual_list))^")"
 
+and gen_move_list=function
+	| point::list->"*"^(gen_expr point)^","^(String.concat "," (List.map gen_expr list))
 
 and gen_point=function
 |Point(expr1,expr2)->"new point((float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"

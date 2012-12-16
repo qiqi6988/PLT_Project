@@ -12,4 +12,8 @@ def int main()
 	display(e1);
 	display(p1);
 	display(poly1);
+	Area(poly1);
+	Area(e1);
+	Perimeter(poly1);
+	Perimeter(e1);
 }

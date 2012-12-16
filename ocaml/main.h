@@ -606,6 +606,35 @@ bool isCongruent(polygon shape1, polygon shape2)//judge whether two polygons are
     }
 }
 
+
+void Move(point &p, float x, float y)// move a point based on the vector (x,y)
+{
+    p.x = p.x+x;
+    p.y = p.y+y;
+}
+void Move(line &l, float x, float y)// move a line based on the vector (x,y)
+{
+    l.p1->x = l.p1->x+x;
+    l.p1->y = l.p1->y+y;
+    l.p2->x = l.p2->x+x;
+    l.p2->y = l.p2->y+y;
+}
+void Move(polygon &poly, float x, float y)// move a polygon based on the vector (x,y)
+{
+    int num = poly.pointNum,i;
+    point ** pointCollection=poly.pointCollection;
+    for(i = 0;i<num;i++)
+    {
+        pointCollection[i]->x = pointCollection[i]->x+x;
+        pointCollection[i]->y = pointCollection[i]->y+y;
+    }
+    
+}
+
+void Move(ellipse &e, float x, float y)// move an ellipse based on the vector (x,y)
+{
+    Move(*(e.focusPoint), x, y);
+}
 /*
 int main()
 {
@@ -635,6 +664,19 @@ int main()
 	display(l1);
 	display(e1);
 	display(shape1);
+	point * p=new point(1,2);
+	display(p);
+	Move(*p,1,1);
+	display(p);
+	display(shape1);
+	Move(*shape1,1,2);
+	display(shape1);
+	display(l1);
+	Move(*l1,1,2);
+	display(l1);
+	display(e1);
+	Move(*e1,1,2);
+	display(e1);
 	
 	
 }
