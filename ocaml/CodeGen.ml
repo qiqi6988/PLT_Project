@@ -75,7 +75,7 @@ match funcname with
 |"Area"-> funcname^"(*"^(gen_actual_list actual_list)^")"
 | "Perimeter"-> funcname^"(*"^(gen_actual_list actual_list)^")"
 | "Move"->funcname^"("^(gen_move_list actual_list)^")"
-| "print"->"printf"^"(*"^(gen_actual_list actual_list)^")"
+| "print"->"printf"^"("^(gen_actual_list actual_list)^")"
 |_ ->funcname^"("^(gen_actual_list actual_list)^")"
 end
 | String(str)->str
