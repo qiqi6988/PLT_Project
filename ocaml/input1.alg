@@ -3,6 +3,8 @@ def int main()
         line l1;
         line l2;
 	point p;
+	string ab;
+	string str;
         boolean a;
 	ellipse e1;
  	ellipse e2;
@@ -41,7 +43,12 @@ def int main()
 	e1~<e2;
 	e1~>e2;
 	printf("ok");
-	
+	ab="abcd";
+	str="ab";
+	str=ab;
+	printf(str);
+	if(str:=ab)
+	printf("strequal");
 	
 }
 

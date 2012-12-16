@@ -24,7 +24,7 @@ let gen_type=function
 |POLYGON-> "polygon *"
 |ELLIPSE	-> "ellipse *"
 |ARRAY ->"array"
-|STRING->"string"
+|STRING->"char *"
 
 
 (*test case:gen_expr ( Binop(PointEx(Point(INT(1),INT(2))),EE,PointEx(Point(INT(1),INT(2)))) );;*)
@@ -39,6 +39,7 @@ match expr with
 | Binop( expr1,op ,expr2)->
 begin
 match op with
+|QE->"!strcmp("^(gen_expr expr1)^","^(gen_expr expr2)^")"
 |TTS->"(*"^(gen_expr expr1)^")<=(*"^(gen_expr expr2)^")"
 |TTL->"(*"^(gen_expr expr1)^")>=(*"^(gen_expr expr2)^")"
 |TS->"(*"^(gen_expr expr1)^")<(*"^(gen_expr expr2)^")"
@@ -176,5 +177,5 @@ print_string (gen_program(vars,fdecl_list));;
 let gen_program (var_list, fdecl_list)=
 let vars=gen_locals var_list in
 let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
-let header="#include \"main.h\"\n#include \"stdio.h\"\n" in
+let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\n" in
 header^vars^"\n"^fdecls

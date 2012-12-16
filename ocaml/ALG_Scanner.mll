@@ -39,6 +39,7 @@ rule token=parse
 |"<" {S}|">" {L}
 |"~>" {TL}|"~<"{TS}|"~~>"{TTL}|"~~<"{TTS}|"~="{TE}
 |"~" {T}
+|":=" {QE}
 (*basic operators*)
 |"+" {PLUS} |"-" {MINUS} | "*" {MUL}
 |"/" {DIV}|"%" {PERC} |"=" {E}
