@@ -256,8 +256,8 @@ let rec get_expr_type expr func env =
 					| INT_TYPE, EE, FLOAT -> BOOLEAN
 					| FLOAT, EE, INT_TYPE -> BOOLEAN
 					| FLOAT, EE, FLOAT -> BOOLEAN
-					| POLYGON,EE,POLYGON -> BOOLEAN
-					| ELLIPSE, EE, ELLIPSE -> BOOLEAN
+					| POLYGON,TE,POLYGON -> BOOLEAN
+					| ELLIPSE, TE, ELLIPSE -> BOOLEAN
 					| LINE, EE, LINE -> BOOLEAN
 					| POINT, EE, POINT -> BOOLEAN
 					| STRING, EE, STRING -> BOOLEAN
@@ -275,34 +275,34 @@ let rec get_expr_type expr func env =
 					| INT_TYPE, SE, FLOAT -> BOOLEAN
 					| FLOAT, SE, INT_TYPE -> BOOLEAN
 					| FLOAT, SE, FLOAT -> BOOLEAN
-					| POLYGON, SE, POLYGON -> BOOLEAN
-					| POLYGON, SE, ELLIPSE -> BOOLEAN
-					| ELLIPSE, SE, POLYGON -> BOOLEAN
-					| ELLIPSE, SE, ELLIPSE -> BOOLEAN
+					| POLYGON, TTS, POLYGON -> BOOLEAN
+					| POLYGON, TTS, ELLIPSE -> BOOLEAN
+					| ELLIPSE, TTS, POLYGON -> BOOLEAN
+					| ELLIPSE, TTS, ELLIPSE -> BOOLEAN
 				  | INT_TYPE, LE, INT_TYPE -> BOOLEAN
 					| INT_TYPE, LE, FLOAT -> BOOLEAN
 					| FLOAT, LE, INT_TYPE -> BOOLEAN
 					| FLOAT, LE, FLOAT -> BOOLEAN
-					| POLYGON, LE, POLYGON -> BOOLEAN
-					| POLYGON, LE, ELLIPSE -> BOOLEAN
-					| ELLIPSE, LE, POLYGON -> BOOLEAN
-					| ELLIPSE, LE, ELLIPSE -> BOOLEAN
+					| POLYGON, TTL, POLYGON ->BOOLEAN
+					| POLYGON, TTL, ELLIPSE -> BOOLEAN
+					| ELLIPSE, TTL, POLYGON -> BOOLEAN
+					| ELLIPSE, TTL, ELLIPSE -> BOOLEAN
 					| INT_TYPE, S, INT_TYPE -> BOOLEAN
 					| INT_TYPE, S, FLOAT -> BOOLEAN
 					| FLOAT, S, INT_TYPE -> BOOLEAN
 					| FLOAT, S, FLOAT -> BOOLEAN
-					| POLYGON, S, POLYGON -> BOOLEAN
-					| POLYGON, S, ELLIPSE -> BOOLEAN
-					| ELLIPSE, S, POLYGON -> BOOLEAN
-					| ELLIPSE, S, ELLIPSE -> BOOLEAN
+					| POLYGON, TS, POLYGON -> BOOLEAN
+					| POLYGON, TS, ELLIPSE -> BOOLEAN
+					| ELLIPSE, TS, POLYGON -> BOOLEAN
+					| ELLIPSE, TS, ELLIPSE -> BOOLEAN
 					| INT_TYPE, L, INT_TYPE -> BOOLEAN
 					| INT_TYPE, L, FLOAT -> BOOLEAN
 					| FLOAT, L, INT_TYPE -> BOOLEAN
 					| FLOAT, L, FLOAT -> BOOLEAN
-					| POLYGON, L, POLYGON -> BOOLEAN
-					| POLYGON, L, ELLIPSE -> BOOLEAN
-					| ELLIPSE, L, POLYGON -> BOOLEAN
-					| ELLIPSE, L, ELLIPSE -> BOOLEAN
+					| POLYGON, TL, POLYGON -> BOOLEAN
+					| POLYGON, TL, ELLIPSE -> BOOLEAN
+					| ELLIPSE, TL, POLYGON -> BOOLEAN
+					| ELLIPSE, TL, ELLIPSE -> BOOLEAN
 					| LINE, PARA, LINE -> BOOLEAN(*PARA*)
 					| LINE, INTERS, LINE -> POINT(*INTERS*)
 					(*| LINE, INTERS, ELLIPSE -> ARRAY*)
@@ -470,8 +470,8 @@ let check_valid_body func env =
 								if (check_stmt stmt1) && (check_stmt stmt2)
 								then true
 								else raise(Failure("Invalid statement in the if statement in function: "^ func.fname))
-				|For(_,_,_,stmt1) -> if check_stmt stmt1 then true else raise(Failure("Invalid statement in For statement in function:"^ func.fname))
-				|While(_,stmt1)-> if check_stmt stmt1 then true else raise(Failure("Invalid statement in While statement in function:"^ func.fname))
+				|For(a,b,c,stmt1) -> if expr_valid func a env && expr_valid func b env && expr_valid func c env && check_stmt stmt1 then true else raise(Failure("Invalid statement or expressions in For statement in function:"^ func.fname))
+				|While(a,stmt1)-> if expr_valid func a env && check_stmt stmt1 then true else raise(Failure("Invalid statement in While statement in function:"^ func.fname))
 				in (*end of check_stmt*)
       let _ = List.map (check_stmt) func.body in
 			true						     
