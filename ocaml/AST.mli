@@ -1,4 +1,4 @@
-type op=QE|EE|NE|SE|LE|S|L|PARA|INTERS|RELAT|SS|LL|SSE|LLE|PLUS|MINUS|MUL|DIV|PERC|TL|TS|TTL|TTS|TE|T
+type op=QE|EE|NE|SE|LE|S|L|PARA|INTERS|RELAT|SS|LL|SSE|LLE|PLUS|MINUS|MUL|DIV|PERC|TL|TS|TTL|TTS|TE|T|AND|OR
 
 
 type var_type=
@@ -19,6 +19,7 @@ type expr=
 	| INT of int
 	| ID of string
 	| Binop of expr * op * expr
+	| Not of expr
 	| Assign of string * expr
 	| Call of string * expr list
 	| String of string
