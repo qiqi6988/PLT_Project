@@ -260,7 +260,7 @@ let rec get_expr_type expr func env =
 					| ELLIPSE, TE, ELLIPSE -> BOOLEAN
 					| LINE, EE, LINE -> BOOLEAN
 					| POINT, EE, POINT -> BOOLEAN
-					| STRING, EE, STRING -> BOOLEAN
+					| STRING, QE, STRING -> BOOLEAN
 					| BOOLEAN, NE, BOOLEAN->BOOLEAN      (*NE*)
 					| INT_TYPE, NE, INT_TYPE -> BOOLEAN
 					| INT_TYPE, NE, FLOAT -> BOOLEAN
@@ -368,6 +368,40 @@ let is_assign_call func = function
 (*env: the big enviornment*)
 
 let check_func_paralist_type fname exprlist func1 env = 
+   let l = List.length exprlist in
+        if fname = "display" && l= 1 then let expr1 = List.hd exprlist in let v_type = get_expr_type expr1 func1  env in 
+				
+        match v_type with 
+        | POINT -> 1
+        | ELLIPSE -> 1
+        | POLYGON -> 1
+        | LINE -> 1
+        | _ -> raise(Failure("Wrong usage in using display function by choosing variable type "))
+        
+        else if l=1 && ((fname = "Perimeter")||(fname = "Area")) then
+        let expr1 = List.hd exprlist in let v_type = get_expr_type expr1 func1  env in 
+       
+       match v_type with
+      |ELLIPSE -> 1
+      |POLYGON -> 1
+      | _ -> raise(Failure("Wrongly use function "^ fname))
+      
+
+       else if l = 2 && fname = "Move" then
+      let expr1 = List.hd exprlist and expr2 = List.hd (List.tl exprlist)
+         in let v_type1 = get_expr_type expr1 func1  env and v_type2  =get_expr_type expr2     func1 env in 
+         match v_type1,v_type2 with
+        |ELLIPSE, INT_TYPE -> 1
+        |POLYGON, INT_TYPE -> 1
+        |LINE, INT_TYPE ->1
+        |POINT, INT_TYPE ->1
+        |ELLIPSE, FLOAT ->1
+        |POLYGON, FLOAT ->1
+        |POINT, FLOAT ->1
+        |LINE, FLOAT ->1
+        |_,_ -> raise(Failure("Wrong usage of function "^ "Move"))
+       
+        else 
 	let func = return_func_given_name fname env in 
 	let arg_type_list = List.map (fun(e) -> get_expr_type e func1 env) exprlist (*When you do the function call, you need to cehck the expr list matches every claimed parameter of the function*)
 	  in
@@ -533,18 +567,21 @@ let dup_in_global env =
 
 
 (*define all the built-in functions*)
-let f1 = {ftype = VOID;fname = "displayPoint";formal_list = [(POINT,"a")];locals = [];body = []}
-let f2 = {ftype = VOID;fname = "displayLine";formal_list = [(LINE,"a")];locals = [];body = []}
-let f3 = {ftype = VOID;fname = "displayEllipse";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
-let f4 = {ftype = VOID;fname = "displayPolygon";formal_list = [(POLYGON,"a")];locals = [];body = []}
+let f1 = {ftype = VOID;fname = "display";formal_list = [(POINT,"a")];locals = [];body = []}
+let f2 = {ftype = VOID;fname = "display";formal_list = [(LINE,"a")];locals = [];body = []}
+let f3 = {ftype = VOID;fname = "display";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
+let f4 = {ftype = VOID;fname = "display";formal_list = [(POLYGON,"a")];locals = [];body = []}
 
 let f5 = {ftype = VOID;fname = "drawPoint";formal_list = [(POINT,"a")];locals = [];body = []}
 let f6 = {ftype = VOID;fname = "drawLine";formal_list = [(LINE,"a")];locals = [];body = []}
 let f7 = {ftype = VOID;fname = "drawEllipse";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
 let f8 = {ftype = VOID;fname = "drawPolygon";formal_list = [(POLYGON,"a")];locals = [];body = []}
 let f9 = {ftype = VOID;fname = "print";formal_list = [(STRING,"a")];locals = [];body = []}
+let f10 = {ftype = FLOAT ;fname = "Perimeter";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
+let f11 = {ftype = FLOAT ;fname = "Area";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
+let f12 = {ftype = FLOAT ;fname = "Move";formal_list = [(ELLIPSE,"a");(FLOAT,"b")];locals = [];body = []}
 
-let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9]
+let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9;f10;f11;f12]
 let check_program (var_list,fun_list) = 
 	let env = {functions = built_in;variables = var_list} in
          let _global_check = dup_in_global env in
