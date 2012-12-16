@@ -12,7 +12,7 @@ def int main()
 		if(l1//l2)
 		{
 		display(l2);
-		printf("l1parallell2");
+		print("l1 parallel l2");
 		}
 	}
 }
