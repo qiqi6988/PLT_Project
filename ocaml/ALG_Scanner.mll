@@ -23,10 +23,11 @@ rule token=parse
 | "switch" {SWITCH}|"continue" {CONTINUE}|"break" {BREAK}
 | "def" {DEF}|"default" {DEFAULT}
 | "\"" string* "\"" as str {String(str)}
+|"+" {PLUS} |"-" {MINUS}
 |id		as identifier {ID(identifier)}
-|['+' '-']?digit+ as int_num {INT(int_of_string int_num)} 
-|['+' '-']?(digit+'.'digit*|'.'digit+)('e'['+' '-']?digit+)?
-|['+' '-']?digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
+|['-']?digit+ as int_num {INT(int_of_string int_num)}  
+|['-']?(digit+'.'digit*|'.'digit+)('e'['+' '-']?digit+)?
+|['-']?digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
 (*punctuation*)
 |"(" {LPAREN} | ")" {RPAREN} | "{" {LBRACE} | "}" {RBRACE} 
 | "[" {LBRACKET } | "]" {RBRACKET } |"," {COMMA } | ";" {SEMI}
@@ -41,7 +42,7 @@ rule token=parse
 |"~" {T}
 |":=" {QE}
 (*basic operators*)
-|"+" {PLUS} |"-" {MINUS} | "*" {MUL}
+| "*" {MUL}
 |"/" {DIV}|"%" {PERC} |"=" {E}
 |eof  	{EOF}
 |_ 	as char		{raise (Failure("SCANNER:illegal input"^Char.escaped char))}

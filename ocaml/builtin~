@@ -1,0 +1,26 @@
+|PARA->"(isParallel(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
+|INTERS->"(getIntersect(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
+|RELAT->"(getRelation(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
+|TE->"(isSimilar(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
+|SS->"(isPerimeterLessThan("^gen_expr expr1^","^gen_expr expr2^"))"
+|LL->"(isPerimeterLargerThan("^gen_expr expr1^","^gen_expr expr2^"))"
+|SSE->"(isPerimeterLessOrEqual("^gen_expr expr1^","^gen_expr expr2^"))"
+|LLE->"(isPerimeterLargerOrEqual("^gen_expr expr1^","^gen_expr expr2^"))"
+
+boolean isParallel(line,line)
+point getIntersect(line,line)
+string getRelation(line,ellipse)
+string getRelation(circle,circle)
+boolean isSimilar(polygon,polygon)
+boolean 
+
+
+void displayPoint(point)
+void displayLine(line)
+void displayEllipse(ellipse)
+void displayPolygon(polygon)
+void drawPoint(point)
+void drawLine(line)
+void drawEllipse(ellipse)
+void drawPolygon(polygon)
+

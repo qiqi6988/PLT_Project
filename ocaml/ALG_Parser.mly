@@ -17,7 +17,6 @@
 %nonassoc NOELSE
 %nonassoc ELSE
 
-
 %right E
 %left PLUS MINUS
 %left MUL DIV PERC

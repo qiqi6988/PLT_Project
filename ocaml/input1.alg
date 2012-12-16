@@ -1,5 +1,6 @@
 def int main()
 {
+	int i;
         line l1;
         line l2;
 	point p;
@@ -50,6 +51,7 @@ def int main()
 	if(str:=ab)
 	printf("strequal");
 	poly1~=poly2;
-	
+	for(i=1;i<5;i=i+1)
+	{i=i+1;}
 }
 

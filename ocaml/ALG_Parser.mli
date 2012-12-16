@@ -1,4 +1,12 @@
 type token =
+  | TL
+  | TS
+  | TTL
+  | TTS
+  | TE
+  | T
+  | QE
+  | EOF
   | FOR
   | LPAREN
   | RPAREN
@@ -42,7 +50,6 @@ type token =
   | LE
   | S
   | L
-  | TE
   | E
   | PLUS
   | MINUS
@@ -54,5 +61,5 @@ type token =
   | SS
   | LL
 
-val start1 :
-  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> unit
+val program :
+  (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> AST.program

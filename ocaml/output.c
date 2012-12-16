@@ -1,0 +1,66 @@
+#include "main.h"
+#include "stdio.h"
+#include"string.h"
+
+int main ()
+{int i;
+line * l1;
+line * l2;
+point * p;
+char * ab;
+char * str;
+bool a;
+ellipse * e1;
+ellipse * e2;
+polygon * poly1;
+polygon * poly2;
+poly1=new polygon(3,new point*[3]{new point((float) 0,(float) 0),new point((float) -0.5,(float) -1),new point((float) -1,(float) 0)});
+poly2=new polygon(3,new point*[3]{new point((float) 0,(float) 0),new point((float) 0.5,(float) 1),new point((float) 1,(float) 0)});
+l1=new line(new point((float) 1,(float) 1),new point((float) 2,(float) 2));
+l2=new line(new point((float) 3,(float) 3),new point((float) 4,(float) 4));
+e1=new ellipse(new point((float) 1,(float) 1),(float) 1,(float) 1);
+e2=new ellipse(new point((float) 3,(float) 1),(float) 1,(float) 1);
+a=(isParallel(*l1,*l2));
+if(a)
+printf(("true"));
+else
+{}
+p=(getIntersect(*l1,*l2));
+displayPoint((p));
+printf(((getRelation(*e1,*e2))));
+printf(((getRelation(*l1,*e1))));
+if((isSimilar(*poly1,*poly2)))
+printf(("true"));
+else
+{}
+if((isPerimeterLessThan(*poly1,*poly2)))
+printf(("poly1lesspoly2"));
+else
+{}
+if((isPerimeterLessOrEqual(*e1,*e2)))
+printf(("e1lesse2"));
+else
+{}
+if((*e1)<=(*e2))
+printf(("e1smaller"));
+else
+{}
+if((*e1)>=(*e2))
+printf(("e1larger"));
+else
+{}
+(*e1)<(*e2);
+(*e1)>(*e2);
+printf(("ok"));
+ab="abcd";
+str="ab";
+str=ab;
+printf((str));
+if(!strcmp(str,ab))
+printf(("strequal"));
+else
+{}
+(isCongruent(*poly1,*poly2));
+for(i=1;(i)<(5);i=(i)+(1))
+{i=(i)+(1);}
+}
