@@ -59,6 +59,7 @@ match op with
 |INTERS->"(getIntersect(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |RELAT->"(getRelation(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |T->"(isSimilar(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
+|TE->"(isCongruent(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |SS->"(isPerimeterLessThan(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |LL->"(isPerimeterLargerThan(*"^gen_expr expr1^",*"^gen_expr expr2^"))"
 |SSE->"(isPerimeterLessOrEqual(*"^gen_expr expr1^",*"^gen_expr expr2^"))"

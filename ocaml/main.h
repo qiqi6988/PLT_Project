@@ -490,6 +490,97 @@ bool operator> (ellipse p1,ellipse p2)
 	float area2=getEllipseArea(p2);
 	return (area1>area2);
 }
+
+
+
+
+
+bool naiveCongruent(polygon shape1, polygon shape2,int start1, int start2)// assume we know where to start to check whether two polygond are similar
+{
+    int i = 0,j = 0;
+    int num1 = shape1.pointNum,num2 = shape2.pointNum;
+    point ** C1 = shape1.pointCollection;
+    point ** C2 = shape2.pointCollection;
+    while(i<num1 && j<num2)
+    {
+        line *shape1Line1 = getLine(*C1[(start1+i)%num1],*C1[(start1+i-1+num1)%num1]);
+        line *shape1Line2 = getLine(*C1[(start1+i)%num1],*C1[(start1+i+1)%num1]);
+        line *shape2Line1 = getLine(*C2[(start2+j)%num2],*C2[(start2+j-1+num2)%num2]);
+        line *shape2Line2 = getLine(*C2[(start2+j)%num2],*C2[(start2+j+1)%num2]);
+        float shape1Line1Length = getDis(C1[(start1+i)%num1],C1[(start1+i-1+num1)%num1]);
+        float shape1Line2Length = getDis(C1[(start1+i)%num1],C1[(start1+i+1)%num1]);
+        float shape2Line1Length = getDis(C2[(start2+j)%num2],C2[(start2+j-1+num2)%num2]);
+        float shape2Line2Length = getDis(C2[(start2+j)%num2],C2[(start2+j+1)%num2]);
+        if(fabs(getAngle(*shape1Line1,*shape1Line2) - getAngle(*shape2Line1,*shape2Line2)) >= 0.0001)
+        {
+            
+            return false;
+        }
+        if(fabs(shape1Line1Length-shape2Line1Length)>0.0001 || fabs(shape1Line2Length-shape2Line2Length)>0.0001)
+        {
+            return false;//we should also check whether the ratio of edges' length are the same
+        }
+        
+        i++;
+        j++;
+    }
+    return true;
+    
+}
+
+
+
+bool naiveCongruent2(polygon shape1, polygon shape2,int start1, int start2)// assume we know where to start to check whether two polygond are congruent
+{
+    int i = 0,j = 0;
+    int num1 = shape1.pointNum,num2 = shape2.pointNum;
+    point ** C1 = shape1.pointCollection;
+    point ** C2 = shape2.pointCollection;
+    while(i<num1 && j<num2)
+    {
+        line *shape1Line1 = getLine(*C1[(start1+i)%num1],*C1[(start1+i-1+num1)%num1]);
+        line *shape1Line2 = getLine(*C1[(start1+i)%num1],*C1[(start1+i+1)%num1]);
+        line *shape2Line1 = getLine(*C2[(start2-j+num2)%num2],*C2[(start2-j+1+num2)%num2]);
+        line *shape2Line2 = getLine(*C2[(start2-j+num2)%num2],*C2[(start2-j-1+num2)%num2]);
+        float shape1Line1Length = getDis(C1[(start1+i)%num1],C1[(start1+i-1+num1)%num1]);
+        float shape1Line2Length = getDis(C1[(start1+i)%num1],C1[(start1+i+1)%num1]);
+        float shape2Line1Length = getDis(C2[(start2-j+num2)%num2],C2[(start2-j+1+num2)%num2]);
+        float shape2Line2Length = getDis(C2[(start2-j+num2)%num2],C2[(start2-j-1+num2)%num2]);
+        if(fabs(getAngle(*shape1Line1,*shape1Line2) - getAngle(*shape2Line1,*shape2Line2)) >= 0.0001)
+        {
+            return false;
+        }
+        if(fabs(shape1Line1Length-shape2Line1Length)>0.0001 || fabs(shape1Line2Length!=shape2Line2Length)>0.0001)
+        {
+            return false;//we should also check whether the ratio of edges' length are the same
+        }
+        
+        i++;
+        j++;
+    }
+    return true;
+    
+}// counter clockwise check
+
+
+bool isCongruent(polygon shape1, polygon shape2)//judge whether two polygons are similar
+{
+    int i;
+    int num1 = shape1.pointNum,num2 = shape2.pointNum;
+    if(num1 != num2)
+        return false;// if the two polygon have different point numbers, then they are not similar
+    else
+    {
+        for(i = 0;i<num1;i++)
+        {
+            if(naiveCongruent(shape1,shape2,i,0) || naiveCongruent2(shape1, shape2, i, 0))
+                return true;
+        }
+        return false;
+        
+    }
+}
+
 /*
 int main()
 {
@@ -513,5 +604,7 @@ int main()
 	printf("polyarealess\n");
 	else
 	printf("polyarealarger\n");
-}
-*/
+	if(isCongruent(*shape1, *shape2))printf("congru");else printf("notcongru");
+	
+	
+}*/

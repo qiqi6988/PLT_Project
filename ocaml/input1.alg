@@ -49,6 +49,7 @@ def int main()
 	printf(str);
 	if(str:=ab)
 	printf("strequal");
+	poly1~=poly2;
 	
 }
 
