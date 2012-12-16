@@ -247,10 +247,13 @@ let rec get_expr_type expr func env =
 						 
 
 	| NUM(s) ->FLOAT
+        | Not(expr1) -> let type1 = get_expr_type expr1 func env in if type1 = BOOLEAN then BOOLEAN else raise(Failure("The type of expression in Not operator should be boolean!"))
 	| Binop(expr1,op,expr2) -> let temp1 = get_expr_type expr1 func env and temp2 = get_expr_type expr2 func env
 	      in
 				begin
 					match temp1,op,temp2 with
+                                        | BOOLEAN, OR, BOOLEAN-> BOOLEAN
+                                        | BOOLEAN, AND, BOOLEAN -> BOOLEAN
 					| BOOLEAN, EE, BOOLEAN -> BOOLEAN(*EE*)
 					| INT_TYPE, EE, INT_TYPE -> BOOLEAN
 					| INT_TYPE, EE, FLOAT -> BOOLEAN
