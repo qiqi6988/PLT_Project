@@ -23,11 +23,11 @@ rule token=parse
 | "switch" {SWITCH}|"continue" {CONTINUE}|"break" {BREAK}
 | "def" {DEF}|"default" {DEFAULT}
 | "\"" string* "\"" as str {String(str)}
-|"+" {PLUS} |"-" {MINUS}
+|"+" {PLUS} |"-." {MINUS}
 |id		as identifier {ID(identifier)}
-|['-']?digit+ as int_num {INT(int_of_string int_num)}  
-|['-']?(digit+'.'digit*|'.'digit+)('e'['+' '-']?digit+)?
-|['-']?digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
+|"-"?digit+ as int_num {INT(int_of_string int_num)}  
+|"-"?(digit+'.'digit*)('e'['+' '-']?digit+)?
+|"-"?digit+'e'['+' '-']?digit+  as float_num {NUM(float_of_string float_num)}
 (*punctuation*)
 |"(" {LPAREN} | ")" {RPAREN} | "{" {LBRACE} | "}" {RBRACE} 
 | "[" {LBRACKET } | "]" {RBRACKET } |"," {COMMA } | ";" {SEMI}
