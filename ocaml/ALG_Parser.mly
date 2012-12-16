@@ -146,7 +146,7 @@ expr:
 |INT {INT($1)}
 |ID {ID($1)}
 |String  {String($1)}
-/*|point   {PointEx($1)}*/
+|point   {PointEx($1)}
 |polygon {PolygonEx($1)}
 |ellipse {EllipseEx($1)}
 |line    {LineEx($1)}
