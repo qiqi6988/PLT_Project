@@ -46,11 +46,36 @@ polygon::polygon(int pointNum1, point ** pointCollection1){pointNum=pointNum1;po
 
 
 /************************The following code are used to judge the relation between two lines*******************/
-void displayPoint(point *p)
+void display(point *p)
 {
     printf("This is a point!\nIt is:\n%f %f", p->x,p->y);
     
 }
+
+void display(line *l)
+{
+    printf("This is a line!\n");
+    printf("The first point is (%f %f) \n",l->p1->x,l->p1->y);
+    printf("The second point is (%f %f) \n", l->p2->x,l->p2->y);
+}
+void display(polygon *p)
+{
+    printf("This is a polygon with %d edges! \n",p->pointNum);
+    printf("The points of this polygon is: \n");
+    int num = p->pointNum,i;
+    point ** C = p->pointCollection;
+    for(i = 0;i<num;i++)
+    {
+        printf("(%f %f)\n", C[i]->x, C[i]->y);
+    }
+}
+void display(ellipse *e)
+{
+    printf("This is an ellipse!\nIts focus point is (%f %f)\nIts major semi-axe's length is %f, and its minor semi-axe's length is %f", e->focusPoint->x, e->focusPoint->y, e->a, e->b);
+}
+
+
+
 point * getPoint(float f1, float f2)
 {
     point *p=new point(f1,f2);
@@ -605,6 +630,12 @@ int main()
 	else
 	printf("polyarealarger\n");
 	if(isCongruent(*shape1, *shape2))printf("congru");else printf("notcongru");
+	line * l1= new line( new point(1.1,1.2), new point(2.1,2.2));
+	ellipse * e1=new ellipse(new point(1.1,1.2),(float)3,(float)4);
+	display(l1);
+	display(e1);
+	display(shape1);
 	
 	
-}*/
+}
+*/
