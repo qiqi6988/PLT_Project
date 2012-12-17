@@ -79,6 +79,7 @@ match funcname with
 | "print_newline"->"cout<<endl;"
 |"getAngle"->"getAngle"^(gen_angle_list actual_list)
 |"getDis"->"getDis"^(gen_actual_list actual_list)
+|"Draw"->"Draw(Image1,*"^(gen_actual_list actual_list)^")"
 |_ ->funcname^"("^(gen_actual_list actual_list)^")"
 end
 | String(str)->str
@@ -179,7 +180,9 @@ let fname=fdecl.fname in
 let formal_list=(gen_var_decl_list fdecl.formal_list) in
 let locals=gen_locals fdecl.locals in
 let body=String.concat "\n" (List.map gen_stmt fdecl.body) in
-ftype^" "^fname^" "^"("^formal_list^")\n{"^locals^"\n"^body^"\n}"
+match fname with
+|"main"->ftype^" "^fname^" "^"("^formal_list^")\n{\n"^locals^"\n"^body^"\nDrawAx(Image1);\ncvNamedWindow(\"ALG\",1);\ncvShowImage(\"ALG\",Image1);\ncvWaitKey(0);\n}"
+|_->ftype^" "^fname^" "^"("^formal_list^")\n{"^locals^"\n"^body^"\n}"
 
 
 (*let test_gen_func=
@@ -199,7 +202,7 @@ print_string (gen_program(vars,fdecl_list));;
 let gen_program (var_list, fdecl_list)=
 let vars=gen_locals var_list in
 let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
-let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\n" in
+let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\nIplImage *Image1;\nint Position=500;\nint Color=255;\nint Shift=0;\n" in
  let _ = print_endline "\nThe Code Generation has been finished!\n" in
 
 header^vars^"\n"^fdecls

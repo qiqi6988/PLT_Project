@@ -391,6 +391,15 @@ let check_func_paralist_type fname exprlist func1 env =
         | POLYGON -> 1
         | LINE -> 1
         | _ -> raise(Failure("Wrong usage in using display function by choosing variable type "))
+
+	else if fname = "Draw" && l= 1 then let expr1 = List.hd exprlist in let v_type = get_expr_type expr1 func1  env in 
+				
+        match v_type with 
+        | POINT -> 1
+        | ELLIPSE -> 1
+        | POLYGON -> 1
+        | LINE -> 1
+        | _ -> raise(Failure("Wrong usage in using draw function by choosing variable type "))
         
         else if l=1 && ((fname = "Perimeter")||(fname = "Area")) then
         let expr1 = List.hd exprlist in let v_type = get_expr_type expr1 func1  env in 
@@ -616,10 +625,10 @@ let f2 = {ftype = VOID;fname = "display";formal_list = [(LINE,"a")];locals = [];
 let f3 = {ftype = VOID;fname = "display";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
 let f4 = {ftype = VOID;fname = "display";formal_list = [(POLYGON,"a")];locals = [];body = []}
 
-let f5 = {ftype = VOID;fname = "drawPoint";formal_list = [(POINT,"a")];locals = [];body = []}
-let f6 = {ftype = VOID;fname = "drawLine";formal_list = [(LINE,"a")];locals = [];body = []}
-let f7 = {ftype = VOID;fname = "drawEllipse";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
-let f8 = {ftype = VOID;fname = "drawPolygon";formal_list = [(POLYGON,"a")];locals = [];body = []}
+let f5 = {ftype = VOID;fname = "Draw";formal_list = [(POINT,"a")];locals = [];body = []}
+let f6 = {ftype = VOID;fname = "Draw";formal_list = [(LINE,"a")];locals = [];body = []}
+let f7 = {ftype = VOID;fname = "Draw";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
+let f8 = {ftype = VOID;fname = "Draw";formal_list = [(POLYGON,"a")];locals = [];body = []}
 let f9 = {ftype = VOID;fname = "print";formal_list = [(STRING,"a")];locals = [];body = []}
 let f10 = {ftype = FLOAT ;fname = "Perimeter";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
 let f11 = {ftype = FLOAT ;fname = "Area";formal_list = [(ELLIPSE,"a")];locals = [];body = []}

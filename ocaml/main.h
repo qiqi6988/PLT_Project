@@ -4,6 +4,12 @@ using namespace std;
 #include <math.h>
 #include "string.h"
 #include "stdlib.h"
+#include <cv.h>
+#include <highgui.h>
+
+/****************************************************************/
+//Draw a picture
+
 
 
 class  point
@@ -43,6 +49,45 @@ public:
     polygon(int pointNum, point ** pointCollection);
 };
 polygon::polygon(int pointNum1, point ** pointCollection1){pointNum=pointNum1;pointCollection=pointCollection1;}
+
+/****************************************************************/
+//Draw a point
+void Draw(IplImage *Image1, point p ){
+    cvCircle(Image1, cvPoint(Position+p.x*10, Position-p.y*10), 2, CV_RGB(0,0,0),CV_FILLED);
+}
+
+//Draw a line
+void Draw(IplImage *Image1, line l){
+    cvLineAA(Image1, cvPoint(Position+l.p1.x*10, Position-l.p1.y*10), cvPoint(Position+l.p2.x*10, Position-l.p2.y*10), Color, Shift);
+}
+
+//Draw an ellipse
+void Draw(IplImage *Image1, ellipse e){
+    cvEllipseAA(Image1, cvPoint(Position+e.focusPoint.x*10, Position-10*e.focusPoint.y), cvSize(e.a*10, e.b*10), 0, 0, 360, Color, Shift);
+}
+
+//Draw a polygon
+void Draw(IplImage *Image1, polygon py){
+    int pointNum = py.pointNum;
+    int i = 0;
+    point *pointCollection = py.pointCollection;
+    while (i != pointNum-1){
+        cvLineAA(Image1, cvPoint(Position+pointCollection[i].x*10, Position-10*pointCollection[i].y), cvPoint(Position+pointCollection[i+1].x*10, Position-10*pointCollection[i+1].y), Color, Shift);
+        i ++ ;
+    }
+    cvLineAA(Image1, cvPoint(Position+10*pointCollection[pointNum-1].x, Position-10*pointCollection[pointNum-1].y), cvPoint(Position+10*pointCollection[0].x, Position-10*pointCollection[0].y), Color, Shift);
+    
+}
+
+//Draw the x,y axes 
+void DrawAx(IplImage *Image1){
+    cvLineAA(Image1, cvPoint(0,500),cvPoint(1000,500),0,Shift);
+    cvLineAA(Image1, cvPoint(500,0),cvPoint(500,1000),0,Shift);
+}
+
+/****************************************************************/
+
+
 
 
 /************************The following code are used to judge the relation between two lines*******************/
