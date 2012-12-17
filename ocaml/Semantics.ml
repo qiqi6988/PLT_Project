@@ -421,19 +421,27 @@ let check_func_paralist_type fname exprlist func1 env =
           match v_type1,v_type2 with
 					| POINT,POINT -> 1
 					| _,_ ->raise(Failure("getDis's parameters must be two points!"))
-      else if l = 2 && fname = "Move" then
-      let expr1 = List.hd exprlist and expr2 = List.hd (List.tl exprlist)
-         in let v_type1 = get_expr_type expr1 func1  env and v_type2  =get_expr_type expr2     func1 env in 
-         match v_type1,v_type2 with
-        |ELLIPSE, INT_TYPE -> 1
-        |POLYGON, INT_TYPE -> 1
-        |LINE, INT_TYPE ->1
-        |POINT, INT_TYPE ->1
-        |ELLIPSE, FLOAT ->1
-        |POLYGON, FLOAT ->1
-        |POINT, FLOAT ->1
-        |LINE, FLOAT ->1
-        |_,_ -> raise(Failure("Wrong usage of function "^ "Move"))
+      else if l = 3 && fname = "Move" then
+      let expr1 = List.hd exprlist and expr2 = List.hd (List.tl exprlist) and expr3 = List.hd (List.tl (List.tl exprlist))
+         in let v_type1 = get_expr_type expr1 func1  env and v_type2  =get_expr_type expr2 func1 env  and v_type3  = get_expr_type expr3 func1 env in
+         match v_type1,v_type2,v_type3 with
+        |ELLIPSE, INT_TYPE, INT_TYPE -> 1
+        |ELLIPSE, INT_TYPE, FLOAT -> 1
+        |ELLIPSE, FLOAT, INT_TYPE -> 1
+        |ELLIPSE, FLOAT, FLOAT -> 1
+        |POLYGON, INT_TYPE, INT_TYPE -> 1
+        |POLYGON, INT_TYPE, FLOAT -> 1
+        |POLYGON, FLOAT, INT_TYPE -> 1
+        |POLYGON, FLOAT, FLOAT -> 1
+        |LINE, INT_TYPE, INT_TYPE ->1
+        |LINE, FLOAT, INT_TYPE ->1
+        |LINE, INT_TYPE, FLOAT ->1
+        |LINE, FLOAT, FLOAT ->1
+        |POINT, INT_TYPE, INT_TYPE ->1
+        |POINT, FLOAT, INT_TYPE ->1
+        |POINT, INT_TYPE, FLOAT ->1
+        |POINT, FLOAT, FLOAT ->1
+        |_,_,_ -> raise(Failure("Wrong usage of function "^ "Move"))
        
         else 
 	let func = return_func_given_name fname env in 
