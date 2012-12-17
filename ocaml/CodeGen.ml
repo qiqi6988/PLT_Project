@@ -75,7 +75,8 @@ match funcname with
 |"Area"-> funcname^"(*"^(gen_actual_list actual_list)^")"
 | "Perimeter"-> funcname^"(*"^(gen_actual_list actual_list)^")"
 | "Move"->funcname^"("^(gen_move_list actual_list)^")"
-| "print"->"printf"^"("^(gen_actual_list actual_list)^")"
+| "print"->"cout<<"^"("^(gen_actual_list actual_list)^")"
+| "print_newline"->"cout<<endl;"
 |"getAngle"->"getAngle"^(gen_angle_list actual_list)
 |"getDis"->"getDis"^(gen_actual_list actual_list)
 |_ ->funcname^"("^(gen_actual_list actual_list)^")"
@@ -87,6 +88,7 @@ end
 | PolygonEx(Polygon(point_list))->"new polygon("^(string_of_int (List.length point_list))^",new point*["^(string_of_int (List.length point_list))^"]"^(gen_points point_list)^")"
 |PolygonEx(PolygonID(p_list))->"new polygon("^(string_of_int (List.length p_list))^",new point*["^(string_of_int (List.length p_list))^"]"^(gen_pointsid p_list)^")"
 | EllipseEx(Ellipse(point, expr1,expr2))->"new ellipse("^(gen_point point)^",(float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"
+|EllipseEx(EllipseID(point, expr1,expr2))->"new ellipse("^point^",(float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"
 
 and gen_actual_list =function
 actual_list ->"("^(String.concat "," (List.map gen_expr actual_list))^")"
