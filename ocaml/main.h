@@ -96,18 +96,27 @@ point *getIntersect(line l1, line l2)
         float x1 = l1.p1->x, y1 = l1.p1->y, x2 = l1.p2->x,y2 = l1.p2->y;
         float h1 = l2.p1->x, k1 = l2.p1->y, h2 = l2.p2->x, k2 = l2.p2->y;
         float temp2,temp1,delta1,delta2;
+	float resultX,resultY;
         delta1 = h1-h2;
         delta2 = x1-x2;
-        if(delta1 == 0)
-        delta1 = 0.00000001;
-        if(delta2 == 0)
-          delta2 = 0.00000001;
+        if(delta1 == 0 && delta2==0)
+		return result;
+	else if(delta1==0)
+        {resultX=h1;resultY=(y2-y1)*(resultX-x1)/(x2-(float)x1)+y1;
+	result = getPoint(resultX, resultY);
+        return result;}
+        else if(delta2 == 0)
+         {resultX=x1;
+	resultY=(k2-k1)*(resultX-h1)/(h2-(float)h1)+k1;
+	result = getPoint(resultX, resultY);
+        return result;}
+
        
         temp2 = (k1-k2)/delta1; temp1 = (y1-y2)/delta2;
         
         float a = temp1-temp2,b = k1-y1-h1*temp2+x1*temp1;
-        float resultX = b/a;
-        float resultY = temp1*(resultX-x1) +y1;
+         resultX = b/a;
+        resultY = temp1*(resultX-x1) +y1;
         result = getPoint(resultX, resultY);
         return result;
     }
