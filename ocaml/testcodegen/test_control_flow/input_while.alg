@@ -7,11 +7,12 @@ def int main()
 	while(i<1000)
 	{
 		i=i+1;
-		print(i);
 		l1=[[1;1],[2;2]];
 		l2=[[2;2],[3;i]];
 		if(l1//l2)
 		{
+		print(i);
+		print_newline();
 		display(l2);
 		print("l1 parallel l2");
 		done;

@@ -48,7 +48,7 @@ polygon::polygon(int pointNum1, point ** pointCollection1){pointNum=pointNum1;po
 /************************The following code are used to judge the relation between two lines*******************/
 void display(point *p)
 {
-    printf("This is a point!\nIt is:\n%f %f", p->x,p->y);
+    printf("Point:%f %f\n", p->x,p->y);
     
 }
 
@@ -71,7 +71,7 @@ void display(polygon *p)
 }
 void display(ellipse *e)
 {
-    printf("This is an ellipse!\nIts focus point is (%f %f)\nIts major semi-axe's length is %f, and its minor semi-axe's length is %f", e->focusPoint->x, e->focusPoint->y, e->a, e->b);
+    printf("This is an ellipse!\nIts focus point is (%f %f)\nIts major semi-axe's length is %f, and its minor semi-axe's length is %f\n", e->focusPoint->x, e->focusPoint->y, e->a, e->b);
 }
 
 
@@ -148,7 +148,7 @@ char * getRelation(ellipse  circle1, ellipse  circle2)
     if(circle1.a!=circle1.b || circle2.a!=circle2.b)
     {
         printf("These two shapes are not both circles!\n");
-	str="";
+	strcpy(str,"");
         return str;//inform a mistake
     }
     
@@ -245,7 +245,7 @@ float getAngle(line l1, line l2)// get the angle between two lines
 
 bool naiveSimilar(polygon shape1, polygon shape2,int start1, int start2)// assume we know where to start to check whether two polygond are similar
 {
-    printf("ok");
+    
     int i = 0,j = 0;
     int num1 = shape1.pointNum,num2 = shape2.pointNum;
     point ** C1 = shape1.pointCollection;
@@ -257,7 +257,6 @@ bool naiveSimilar(polygon shape1, polygon shape2,int start1, int start2)// assum
             line *shape1Line2 = getLine(*C1[(start1+i)%num1],*C1[(start1+i+1)%num1]);
             line *shape2Line1 = getLine(*C2[(start2+j)%num2],*C2[(start2+j-1+num2)%num2]);
             line *shape2Line2 = getLine(*C2[(start2+j)%num2],*C2[(start2+j+1)%num2]);
-
             float shape1Line1Length = getDis(C1[(start1+i)%num1],C1[(start1+i-1+num1)%num1]);
             float shape1Line2Length = getDis(C1[(start1+i)%num1],C1[(start1+i+1)%num1]);
             float shape2Line1Length = getDis(C2[(start2+j)%num2],C2[(start2+j-1+num2)%num2]);
@@ -327,7 +326,7 @@ bool isSimilar(polygon shape1, polygon shape2)//judge whether two polygons are s
 	}
     else
     {
-	printf("ok");
+	
        for(i = 0;i<num1;i++)
         {
 	    //printf("ok");

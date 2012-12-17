@@ -615,11 +615,14 @@ let f8 = {ftype = VOID;fname = "drawPolygon";formal_list = [(POLYGON,"a")];local
 let f9 = {ftype = VOID;fname = "print";formal_list = [(STRING,"a")];locals = [];body = []}
 let f10 = {ftype = FLOAT ;fname = "Perimeter";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
 let f11 = {ftype = FLOAT ;fname = "Area";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
-let f12 = {ftype = FLOAT ;fname = "Move";formal_list = [(ELLIPSE,"a");(FLOAT,"b")];locals = [];body = []}
+let f12 = {ftype = VOID ;fname = "Move";formal_list = [(ELLIPSE,"a");(FLOAT,"b");(FLOAT ,"c")];locals = [];body = []}
+let f16 = {ftype = VOID ;fname = "Move";formal_list = [(POLYGON,"a");(FLOAT,"b");(FLOAT ,"c")];locals = [];body = []}
+let f17 = {ftype = VOID ;fname = "Move";formal_list = [(LINE,"a");(FLOAT,"b");(FLOAT ,"c")];locals = [];body = []}
+let f18 = {ftype = VOID ;fname = "Move";formal_list = [(POINT,"a");(FLOAT,"b");(FLOAT ,"c")];locals = [];body = []}
 let f14 = {ftype = FLOAT ;fname = "getAngle";formal_list = [(LINE,"a");(LINE,"b")];locals = [];body = []}
 let f13 = {ftype = VOID ;fname = "print_newline";formal_list = [];locals = [];body = []}
 let f15 = {ftype = FLOAT ;fname = "getDis";formal_list = [(POINT,"a");(POINT,"b")];locals = [];body = []}
-let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9;f10;f11;f12;f13;f14;f15]
+let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9;f10;f11;f12;f13;f14;f15;f16;f17;f18]
 let check_program (var_list,fun_list) = 
 	let env = {functions = built_in;variables = var_list} in
          let _global_check = dup_in_global env in
