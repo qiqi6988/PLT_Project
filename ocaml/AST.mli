@@ -44,6 +44,7 @@ and polygon=
 
 and ellipse=
 	| Ellipse of point * expr * expr
+	| EllipseID of string * expr * expr
 
 
 
