@@ -36,9 +36,11 @@ and point=
 
 and line=
 	| Line of point * point
+	| LineID of string * string
 
 and polygon=
 	| Polygon of point list
+	|PolygonID of string list
 
 and ellipse=
 	| Ellipse of point * expr * expr

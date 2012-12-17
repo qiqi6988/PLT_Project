@@ -83,7 +83,9 @@ end
 | String(str)->str
 | PointEx(Point(expr1,expr2))->"new point((float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"
 | LineEx(Line(point1,point2))->"new line("^(gen_point point1)^","^(gen_point point2)^")"
+|LineEx(LineID(p1,p2))->"new line("^p1^","^p2^")"
 | PolygonEx(Polygon(point_list))->"new polygon("^(string_of_int (List.length point_list))^",new point*["^(string_of_int (List.length point_list))^"]"^(gen_points point_list)^")"
+|PolygonEx(PolygonID(p_list))->"new polygon("^(string_of_int (List.length p_list))^",new point*["^(string_of_int (List.length p_list))^"]"^(gen_pointsid p_list)^")"
 | EllipseEx(Ellipse(point, expr1,expr2))->"new ellipse("^(gen_point point)^",(float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"
 
 and gen_actual_list =function
@@ -101,7 +103,8 @@ and gen_point=function
 and gen_points point_list=
 "{"^(String.concat "," (List.map gen_point point_list))^"}"
 
-
+and gen_pointsid p_list=
+"{"^(String.concat "," p_list)^"}"
 
 
 (*and stmt=

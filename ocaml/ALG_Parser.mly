@@ -189,9 +189,16 @@ ellipse:
 
 polygon: 
 | LBRACKET points RBRACKET   {Polygon($2)}
+|LBRACKET pointsid RBRACKET   {PolygonID($2)}
 
 line:
 | LBRACKET point COMMA point RBRACKET  {Line($2,$4)}
+|LBRACKET ID COMMA ID RBRACKET  {LineID($2,$4)}
+
+pointsid:
+|ID COMMA ID COMMA ID {[$1;$3;$5]}
+| ID COMMA pointsid           {$1::$3}
+
 
 points:
 |point COMMA point COMMA point {[$1;$3;$5]}
