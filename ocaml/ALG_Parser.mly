@@ -21,7 +21,8 @@
 %right E
 %left PLUS MINUS
 %left MUL DIV PERC
-%left AND OR NOT
+%left AND OR
+%nonassoc NOT 
 %left PARA INTERS RELAT TE SSE LLE  SS LL TL TS TTL TTS  T QE
 
 %left EE NE SE LE S L
@@ -123,7 +124,7 @@ actuals_list:
 |expr LL expr {GeoBinop($1,LL,$3)}
 |expr SSE expr {GeoBinop($1,SSE,$3)}
 |expr LLE expr {GeoBinop($1,LLE,$3)}
-|expr EE expr {GeoBinop1($1,EE,$3)}i
+|expr EE expr {GeoBinop1($1,EE,$3)}
 |expr NE expr {GeoBinop1($1,NE,$3)}
 |expr SE expr {GeoBinop1($1,SE,$3)}
 |expr LE expr {GeoBinop1($1,LE,$3)}
@@ -185,8 +186,8 @@ expr:
 | ID LPAREN actuals_opt RPAREN {Call($1,$3)}
 
 ellipse:
-| LBRACKET point COMMA expr COMMA expr RBRACKET  {Ellipse($2,$4,$6)}
-|LBRACKET ID COMMA expr COMMA expr RBRACKET  {EllipseID($2,$4,$6)}
+| LBRACE point COMMA expr COMMA expr RBRACE  {Ellipse($2,$4,$6)}
+|LBRACE ID COMMA expr COMMA expr RBRACE {EllipseID($2,$4,$6)}
 
 polygon: 
 | LBRACKET points RBRACKET   {Polygon($2)}
@@ -205,6 +206,6 @@ points:
 |point COMMA point COMMA point {[$1;$3;$5]}
 | point COMMA points           {$1::$3}
 point:
-|LBRACKET expr COMMA expr RBRACKET {Point($2,$4)}
+|LBRACKET expr SEMI expr RBRACKET {Point($2,$4)}
 /*expression*/
 %%

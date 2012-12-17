@@ -95,7 +95,7 @@ actual_list ->"("^(String.concat "," (List.map gen_expr actual_list))^")"
 
 and gen_move_list=function
 	| point::list->"*"^(gen_expr point)^","^(String.concat "," (List.map gen_expr list))
-
+	|_->""
 and gen_angle_list=function
 |list->"(*"^(String.concat ",*" (List.map gen_expr list))^")"
 
@@ -198,4 +198,6 @@ let gen_program (var_list, fdecl_list)=
 let vars=gen_locals var_list in
 let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
 let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\n" in
+ let _ = print_endline "\nThe Code Generation has been finished!\n" in
+
 header^vars^"\n"^fdecls
