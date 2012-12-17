@@ -245,7 +245,17 @@ let rec get_expr_type expr func env =
 					in let final = List.for_all check_point_validation l in
 					if final then POLYGON else raise(Failure("Error in Polygon expression!"))(*check whether each point is valid*)
 						 
-
+	| PolygonEx(PolygonID(listid)) -> POLYGON
+        | LineEx(LineID(str1,str2)) -> LINE
+        | EllipseEx(EllipseID(str,expr1,expr2)) -> let type1  = get_expr_type expr1 func env and type2 = get_expr_type expr2 func env in
+          begin
+            match type1 ,type2 with
+            | INT_TYPE,FLOAT
+            | FLOAT,INT_TYPE
+            | INT_TYPE,INT_TYPE
+            | FLOAT,FLOAT -> ELLIPSE
+            | _,_ -> raise(Failure("Error in Ellipse expression"))
+          end
 	| NUM(s) ->FLOAT
         | Not(expr1) -> let type1 = get_expr_type expr1 func env in if type1 = BOOLEAN then BOOLEAN else raise(Failure("The type of expression in Not operator should be boolean!"))
 	| Binop(expr1,op,expr2) -> let temp1 = get_expr_type expr1 func env and temp2 = get_expr_type expr2 func env
@@ -388,9 +398,29 @@ let check_func_paralist_type fname exprlist func1 env =
       |ELLIPSE -> 1
       |POLYGON -> 1
       | _ -> raise(Failure("Wrongly use function "^ fname))
-      
-
-       else if l = 2 && fname = "Move" then
+      else if l == 0 &&fname = "print_newline" then 1
+			else if l == 1 && fname = "print" then   
+				 let expr1 = List.hd exprlist in let v_type = get_expr_type expr1 func1  env in 
+			  
+				     match v_type with
+						|FLOAT -> 1
+						| INT_TYPE -> 1
+						| STRING ->1
+						| _ -> raise(Failure("print function can only print int, float, string!"))
+				
+			else if l == 2 && fname  = "getAngle" then
+				 let expr1 = List.hd exprlist and expr2 = List.hd (List.tl exprlist)
+         in let v_type1 = get_expr_type expr1 func1  env and v_type2  =get_expr_type expr2     func1 env in
+          match v_type1,v_type2 with
+					| LINE,LINE -> 1
+					| _,_ -> raise(Failure("getAngle's parameters must be two lines!"))
+			else if l == 2  && fname = "getDis" then
+				 let expr1 = List.hd exprlist and expr2 = List.hd (List.tl exprlist)
+         in let v_type1 = get_expr_type expr1 func1  env and v_type2  =get_expr_type expr2     func1 env in
+          match v_type1,v_type2 with
+					| POINT,POINT -> 1
+					| _,_ ->raise(Failure("getDis's parameters must be two points!"))
+      else if l = 2 && fname = "Move" then
       let expr1 = List.hd exprlist and expr2 = List.hd (List.tl exprlist)
          in let v_type1 = get_expr_type expr1 func1  env and v_type2  =get_expr_type expr2     func1 env in 
          match v_type1,v_type2 with
@@ -583,8 +613,10 @@ let f9 = {ftype = VOID;fname = "print";formal_list = [(STRING,"a")];locals = [];
 let f10 = {ftype = FLOAT ;fname = "Perimeter";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
 let f11 = {ftype = FLOAT ;fname = "Area";formal_list = [(ELLIPSE,"a")];locals = [];body = []}
 let f12 = {ftype = FLOAT ;fname = "Move";formal_list = [(ELLIPSE,"a");(FLOAT,"b")];locals = [];body = []}
-
-let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9;f10;f11;f12]
+let f14 = {ftype = FLOAT ;fname = "getAngle";formal_list = [(LINE,"a");(LINE,"b")];locals = [];body = []}
+let f13 = {ftype = VOID ;fname = "print_newline";formal_list = [];locals = [];body = []}
+let f15 = {ftype = FLOAT ;fname = "getDis";formal_list = [(POINT,"a");(POINT,"b")];locals = [];body = []}
+let built_in = [f1;f2;f3;f4;f5;f6;f7;f8;f9;f10;f11;f12;f13;f14;f15]
 let check_program (var_list,fun_list) = 
 	let env = {functions = built_in;variables = var_list} in
          let _global_check = dup_in_global env in
