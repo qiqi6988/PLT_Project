@@ -186,6 +186,7 @@ expr:
 
 ellipse:
 | LBRACKET point COMMA expr COMMA expr RBRACKET  {Ellipse($2,$4,$6)}
+|LBRACKET ID COMMA expr COMMA expr RBRACKET  {EllipseID($2,$4,$6)}
 
 polygon: 
 | LBRACKET points RBRACKET   {Polygon($2)}
