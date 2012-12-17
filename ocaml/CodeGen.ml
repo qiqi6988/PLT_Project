@@ -125,6 +125,8 @@ match stmt with
 | If(expr,stmt1,stmt2)->"if("^(gen_expr expr)^")\n"^(gen_stmt stmt1)^"\nelse\n"^(gen_stmt stmt2)
 | For(expr1,expr2,expr3,stmt)->"for("^(gen_expr expr1)^";"^(gen_expr expr2)^";"^(gen_expr expr3)^")\n"^(gen_stmt stmt)
 | While(expr,stmt)->"while("^(gen_expr expr)^")\n"^(gen_stmt stmt)
+|BREAK-> "break;"
+|CONTINUE->"continue;"
 
 
 (*let test_stmt=

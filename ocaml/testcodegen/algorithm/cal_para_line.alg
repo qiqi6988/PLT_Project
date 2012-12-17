@@ -4,17 +4,18 @@ def int main()
 	line l1;
 	line l2;
 	i=0;
-	while(i<1000)
+	for(i=0;i<5;i=i+1)
 	{
-		i=i+1;
-		print(i);
 		l1=[[1;1],[2;2]];
-		l2=[[2;2],[3;i]];
+		l2=[[1;2],[2;i]];
 		if(l1//l2)
 		{
-		display(l2);
+		print(i);
+		print_newline();
 		print("l1 parallel l2");
-		done;
+		print_newline();
+		display(l2);
 		}
 	}
+
 }

@@ -514,6 +514,8 @@ let rec expr_valid func expr env =
 let check_valid_body func env = 
    let rec check_stmt = 
 		function
+			|BREAK->true
+			|CONTINUE->true
 			| Block(stmt_list) -> 
 				let _  = List.map (fun(x) -> check_stmt x) stmt_list in true(*block case*)
 			| ExStmt(expr) -> let vldexpr = expr_valid func expr env and assign_call = is_assign_call func expr in

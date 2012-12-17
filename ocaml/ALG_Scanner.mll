@@ -20,7 +20,7 @@ rule token=parse
 (*control key words*)
 |"for" {FOR}|"while" {WHILE}|"if" {IF}
 | "else" {ELSE}|"elseif" {ELSEIF}|"case" {CASE}|"return" {RETURN}
-| "switch" {SWITCH}|"continue" {CONTINUE}|"break" {BREAK}
+| "switch" {SWITCH}|"goon" {CONTINUE}|"done" {BREAK}
 | "def" {DEF}|"default" {DEFAULT}
 | "and" {AND} |"not" {NOT}|"or" {OR}
 | "\"" string* "\"" as str {String(str)}

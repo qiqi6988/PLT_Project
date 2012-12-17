@@ -54,6 +54,8 @@ stmt:
 | IF LPAREN expr RPAREN stmt ELSE stmt{ If($3, $5, $7) }
 | FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt{ For($3, $5, $7, $9) }
 | WHILE LPAREN expr RPAREN stmt{ While($3, $5)}
+|BREAK SEMI {BREAK}
+|CONTINUE SEMI {CONTINUE}
 
 var_type:
 |INT_KEY   {INT_TYPE}
