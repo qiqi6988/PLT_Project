@@ -181,7 +181,7 @@ let formal_list=(gen_var_decl_list fdecl.formal_list) in
 let locals=gen_locals fdecl.locals in
 let body=String.concat "\n" (List.map gen_stmt fdecl.body) in
 match fname with
-|"main"->ftype^" "^fname^" "^"("^formal_list^")\n{\n"^locals^"\n"^body^"\nDrawAx(Image1);\ncvNamedWindow(\"ALG\",1);\ncvShowImage(\"ALG\",Image1);\ncvWaitKey(0);\n}"
+|"main"->ftype^" "^fname^" "^"("^formal_list^")\n{\n"^locals^"\nCvSize ImageSize1=cvSize(1000,1000);\nImage1=cvCreateImage(ImageSize1,IPL_DEPTH_8U,3);\ncvNot(Image1,Image1);\n"^body^"\n\nDrawAx(Image1);\ncvNamedWindow(\"ALG\",1);\ncvShowImage(\"ALG\",Image1);\ncvWaitKey(0);\n}"
 |_->ftype^" "^fname^" "^"("^formal_list^")\n{"^locals^"\n"^body^"\n}"
 
 
@@ -202,7 +202,7 @@ print_string (gen_program(vars,fdecl_list));;
 let gen_program (var_list, fdecl_list)=
 let vars=gen_locals var_list in
 let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
-let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\nIplImage *Image1;\nint Position=500;\nint Color=255;\nint Shift=0;\n" in
+let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\n" in
  let _ = print_endline "\nThe Code Generation has been finished!\n" in
 
 header^vars^"\n"^fdecls

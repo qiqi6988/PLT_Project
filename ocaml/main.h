@@ -1,15 +1,18 @@
 using namespace std;
 #include "stdio.h"
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include "string.h"
 #include "stdlib.h"
-#include <cv.h>
-#include <highgui.h>
+#include </opt/local/include/opencv/cv.h>
+#include </opt/local/include/opencv/highgui.h>
 
 /****************************************************************/
 //Draw a picture
-
+IplImage *Image1;
+int Position=500;
+int Color=255;
+int Shift=0;
 
 
 class  point
@@ -58,24 +61,24 @@ void Draw(IplImage *Image1, point p ){
 
 //Draw a line
 void Draw(IplImage *Image1, line l){
-    cvLineAA(Image1, cvPoint(Position+l.p1.x*10, Position-l.p1.y*10), cvPoint(Position+l.p2.x*10, Position-l.p2.y*10), Color, Shift);
+    cvLineAA(Image1, cvPoint(Position+l.p1->x*10, Position-l.p1->y*10), cvPoint(Position+l.p2->x*10, Position-l.p2->y*10), Color, Shift);
 }
 
 //Draw an ellipse
 void Draw(IplImage *Image1, ellipse e){
-    cvEllipseAA(Image1, cvPoint(Position+e.focusPoint.x*10, Position-10*e.focusPoint.y), cvSize(e.a*10, e.b*10), 0, 0, 360, Color, Shift);
+    cvEllipseAA(Image1, cvPoint(Position+e.focusPoint->x*10, Position-10*e.focusPoint->y), cvSize(e.a*10, e.b*10), 0, 0, 360, Color, Shift);
 }
 
 //Draw a polygon
 void Draw(IplImage *Image1, polygon py){
     int pointNum = py.pointNum;
     int i = 0;
-    point *pointCollection = py.pointCollection;
+    point **pointCollection = py.pointCollection;
     while (i != pointNum-1){
-        cvLineAA(Image1, cvPoint(Position+pointCollection[i].x*10, Position-10*pointCollection[i].y), cvPoint(Position+pointCollection[i+1].x*10, Position-10*pointCollection[i+1].y), Color, Shift);
+        cvLineAA(Image1, cvPoint(Position+(*(pointCollection[i])).x*10, Position-10*(*pointCollection[i]).y), cvPoint(Position+(*pointCollection[i+1]).x*10, Position-10*(*pointCollection[i+1]).y), Color, Shift);
         i ++ ;
     }
-    cvLineAA(Image1, cvPoint(Position+10*pointCollection[pointNum-1].x, Position-10*pointCollection[pointNum-1].y), cvPoint(Position+10*pointCollection[0].x, Position-10*pointCollection[0].y), Color, Shift);
+    cvLineAA(Image1, cvPoint(Position+10*(*pointCollection[pointNum-1]).x, Position-10*(*pointCollection[pointNum-1]).y), cvPoint(Position+10*(*pointCollection[0]).x, Position-10*(*pointCollection[0]).y), Color, Shift);
     
 }
 
@@ -184,7 +187,7 @@ bool isParallel(line l1, line l2)
 }//judge whether two lines are parallel
 float getDis(point *p1, point *p2)
 {
-    return sqrt(pow((p1->x-p2->x),2.0)+pow((p1->y-p2->y),2.0));
+    return (float)sqrt(pow((double)(p1->x-p2->x),2.0)+pow((double)(p1->y-p2->y),2.0));
 }
 
 char * getRelation(ellipse  circle1, ellipse  circle2)
