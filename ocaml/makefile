@@ -1,9 +1,9 @@
-all: AST.cmi test1
-test1: CodeGen.cmo Semantics.cmo ALG_Parser.cmo ALG_Scanner.cmo test1.cmo 
-	ocamlc  -o test1 CodeGen.cmo Semantics.cmo ALG_Parser.cmo ALG_Scanner.cmo  test1.cmo
+all: AST.cmi compiler
+compiler: CodeGen.cmo Semantics.cmo ALG_Parser.cmo ALG_Scanner.cmo compiler.cmo 
+	ocamlc  -o compiler CodeGen.cmo Semantics.cmo ALG_Parser.cmo ALG_Scanner.cmo  compiler.cmo
 
-test1.cmo : test1.ml
-	ocamlc -c test1.ml
+compiler.cmo : compiler.ml
+	ocamlc -c compiler.ml
 
 ALG_Scanner.cmo : ALG_Scanner.ml
 	ocamlc -c ALG_Scanner.ml
