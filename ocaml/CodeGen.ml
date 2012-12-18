@@ -80,7 +80,7 @@ match funcname with
 |"getAngle"->"getAngle"^(gen_angle_list actual_list)
 |"getDis"->"getDis"^(gen_actual_list actual_list)
 |"Draw"->"Draw(Image1,*"^(gen_actual_list actual_list)^")"
-|_ ->funcname^"("^(gen_actual_list actual_list)^")"
+|_ ->funcname^(gen_actual_list actual_list)
 end
 | String(str)->str
 | PointEx(Point(expr1,expr2))->"new point((float) "^(gen_expr expr1)^",(float) "^(gen_expr expr2)^")"

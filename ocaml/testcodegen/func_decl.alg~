@@ -1,0 +1,13 @@
+def void move11(point p)
+{
+	Move(p,1,1);
+}
+
+def int main()
+{
+	point p;
+	p=[0;0];
+	display(p);
+	move11(p);
+	display(p);
+}
