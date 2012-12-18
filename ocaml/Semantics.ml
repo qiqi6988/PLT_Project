@@ -591,12 +591,12 @@ let check_return func env =
 (*THis will check each function's validity*)
 let check_func f env =
 		let _dup_name = fun_exist f env in
+                   let _ = env.functions <- (f) ::env.functions in
 		   let _dup_formals = check_fpara_duplicate f in
 			   let _dup_vlocals = check_var_duplicate f in
 				   let _vbody = check_valid_body f env in
 					   let _check_return_result = check_return f env in
-						   let _ = env.functions <- (f) ::env.functions in
-							    true
+						  							    true
 
 
 (*check whether there is a main function*)
