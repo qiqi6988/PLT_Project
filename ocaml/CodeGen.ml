@@ -202,7 +202,7 @@ print_string (gen_program(vars,fdecl_list));;
 let gen_program (var_list, fdecl_list)=
 let vars=gen_locals var_list in
 let fdecls= String.concat "\n" (List.map gen_fdecl fdecl_list) in
-let header="#include \"main.h\"\n#include \"stdio.h\"\n#include\"string.h\"\n" in
+let header="#include \"alg.h\"\n#include \"stdio.h\"\n#include\"string.h\"\n" in
  let _ = print_endline "\nThe Code Generation has been finished!\n" in
 
 header^vars^"\n"^fdecls
