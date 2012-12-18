@@ -59,10 +59,35 @@ void Draw(IplImage *Image1, point p ){
     cvCircle(Image1, cvPoint(Position+p.x*10, Position-p.y*10), 2, CV_RGB(0,0,0),CV_FILLED);
 }
 
-//Draw a line
 void Draw(IplImage *Image1, line l){
-    cvLineAA(Image1, cvPoint(Position+l.p1->x*10, Position-l.p1->y*10), cvPoint(Position+l.p2->x*10, Position-l.p2->y*10), Color, Shift);
+    float x1 = 0;
+    float y1 = 0;
+    float x2 = 0;
+    float y2 = 0;
+    float xax1 = 0;
+    float yax1 = 0;
+    float xax2 = 0;
+    float yax2 = 0;
+    x1 = Position+l.p1->x*10;
+    y1 = Position-l.p1->y*10;
+    x2 = Position+l.p2->x*10;
+    y2 = Position-l.p2->y*10;
+    if((l.p2->x-l.p1->x)==0){
+        xax1 = x1 + (1000-y1)*(x2-x1)/(y2-y1);
+        yax1 = 1000;
+        xax2 = x1 + (0-y1)*(x2-x1)/(y2-y1);
+        yax2 = 0;
+    }
+    else{
+        xax1 = 1000;
+        xax2 = 0;
+        yax1 = (y2-y1)*(1000-x1)/(x2-x1) + y1;
+        yax2 = (y2-y1)*(0-x1)/(x2-x1) + y1;
+    }
+    
+    cvLineAA(Image1, cvPoint(xax1, yax1), cvPoint(xax2, yax2), Color, Shift);
 }
+
 
 //Draw an ellipse
 void Draw(IplImage *Image1, ellipse e){
