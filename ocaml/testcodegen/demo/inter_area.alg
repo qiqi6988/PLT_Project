@@ -7,9 +7,12 @@ def int main()
 	point p2;
 	point p3;
 	polygon poly;
-	l1=[[1;1],[2;2]];
-	l2=[[0;0],[2;0]];
-	l3=[[2;2],[2;0]];
+	l1=[[10;10],[20;20]];
+	l2=[[0;0],[20;1]];
+	l3=[[15;20],[20;0]];
+	Draw(l1);
+	Draw(l2);
+	Draw(l3);
 	(!display the information of the three lines!)
 	display(l1);
 	display(l2);
